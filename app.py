@@ -43,7 +43,8 @@ if not app.config.get("RECAPTCHA_PUBLIC_KEY") or not app.config.get("RECAPTCHA_P
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "SQLALCHEMY_DATABASE_URI", 
-    "sqlite:///instance/cofre.db"
+    "sqlite:////var/www/cofre_da_sorte/instance/cofre.db"
+)
 
 )
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "chave-secreta-padrao")
