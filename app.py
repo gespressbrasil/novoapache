@@ -18,34 +18,23 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField, SubmitField
 from wtforms.validators import InputRequired, Length
 from flask_talisman import Talisman 
-from flask_limiter.util import get_remote_address
 import redis
-from google.cloud import recaptchaenterprise_v1
 
-
-# =============================================================================
-# Configuração básica do Flask
-# =============================================================================
-app = Flask(__name__)
 
 # =============================================================================
 # Carregar variáveis de ambiente (.env)
 # =============================================================================
 load_dotenv()
 
-app.config["RECAPTCHA_PUBLIC_KEY"] = os.getenv("RECAPTCHA_PUBLIC_KEY")
-app.config["RECAPTCHA_PRIVATE_KEY"] = os.getenv("RECAPTCHA_PRIVATE_KEY")
-RECAPTCHA_THRESHOLD = 0.5 
-
-# Verificação das variáveis de ambiente necessárias
-if not app.config.get("RECAPTCHA_PUBLIC_KEY") or not app.config.get("RECAPTCHA_PRIVATE_KEY"):
-    app.logger.warning("Chaves do reCAPTCHA não configuradas corretamente no .env!")
+# =============================================================================
+# Configuração básica do Flask
+# =============================================================================
+app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "SQLALCHEMY_DATABASE_URI", 
-    "sqlite:////var/www/cofre_da_sorte/instance/cofre.db"
+    "sqlite:///cofre.db"
 )
-
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "chave-secreta-padrao")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['SESSION_COOKIE_SECURE'] = True
@@ -53,59 +42,21 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 
 
+# =============================================================================
+# Configuração do Google reCAPTCHA v3
+# =============================================================================
+app.config["RECAPTCHA_PUBLIC_KEY"] = os.getenv("RECAPTCHA_PUBLIC_KEY")
+app.config["RECAPTCHA_PRIVATE_KEY"] = os.getenv("RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_THRESHOLD = 0.5  # Ajuste conforme necessário
 
-def verify_recaptcha(token: str, action: str) -> bool:
-    """Verifica o reCAPTCHA usando a API do Google Cloud"""
-    secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
-    if not secret_key:
-        app.logger.warning("Chave secreta do reCAPTCHA não configurada; verificação ignorada.")
-        return False
 
-    # Configurar o cliente do reCAPTCHA Enterprise
-    client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
 
-    # Definir o evento com o token e a chave do site
-    event = recaptchaenterprise_v1.Event()
-    event.site_key = app.config["RECAPTCHA_PUBLIC_KEY"]
-    event.token = token
-
-    assessment = recaptchaenterprise_v1.Assessment()
-    assessment.event = event
-
-    # Usar o ID do projeto do Google Cloud
-    project_name = f"projects/{os.getenv('GCP_PROJECT_ID')}"
-
-    # Solicitar a avaliação do reCAPTCHA
-    request = recaptchaenterprise_v1.CreateAssessmentRequest()
-    request.assessment = assessment
-    request.parent = project_name
-
-    # Enviar a solicitação para o Google
-    try:
-        response = client.create_assessment(request)
-        
-        # Verificar se o token é válido
-        if not response.token_properties.valid:
-            app.logger.warning(f"Token inválido: {response.token_properties.invalid_reason}")
-            return False
-
-        # Verificar se a ação corresponde ao esperado
-        if response.token_properties.action != action:
-            app.logger.warning(f"Ação reCAPTCHA não corresponde: {response.token_properties.action}")
-            return False
-
-        # Verificar a pontuação do reCAPTCHA
-        if response.risk_analysis.score >= RECAPTCHA_THRESHOLD:
-            return True
-        else:
-            app.logger.warning(f"Pontuação do reCAPTCHA abaixo do limite: {response.risk_analysis.score}")
-            return False
-    except Exception as e:
-        app.logger.error(f"Erro ao verificar reCAPTCHA: {e}")
-        return False
-
+# Definição da Política de Content Security Policy (CSP)
+# =============================================================================
 CSP_POLICY = {
+    # Fonte padrão para todos os recursos
     "default-src": ["'self'"],
+    # Scripts: permite scripts do próprio domínio, Google, reCAPTCHA e permite inline (com cautela)
     "script-src": [
         "'self'",
         "https://www.google.com",
@@ -113,36 +64,43 @@ CSP_POLICY = {
         "https://www.recaptcha.net",
         "'unsafe-inline'"  
     ],
+    # Estilos: permite estilos do próprio domínio e do Google Fonts, e CSS inline
     "style-src": [
         "'self'",
         "'unsafe-inline'",  
         "https://fonts.googleapis.com"
     ],
+    # Fontes: permite fontes do próprio domínio e do Google Fonts
     "font-src": [
         "'self'",
         "https://fonts.gstatic.com"
     ],
+    # Imagens: permite imagens do próprio domínio, imagens embutidas em data-uri e de fontes do Google
     "img-src": [
-        "'self'",
-        "data:",
+        "'self'",  # Permite imagens do próprio domínio
+        "data:",  # Permite imagens embutidas em base64
         "https://www.google.com",
         "https://www.gstatic.com"
     ],
+    # Conexões: permite conexões AJAX e WebSocket ao próprio domínio e fontes do Google
     "connect-src": [
         "'self'",
         "https://www.google.com",
         "https://www.gstatic.com"
     ],
+    # Frames: permite frames do próprio domínio, Google e reCAPTCHA
     "frame-src": [
         "'self'",
         "https://www.google.com",
         "https://www.recaptcha.net"
     ],
-    "object-src": ["'none'"],
+    # Bloquear objetos (plugins, por exemplo)
+    "object-src": ["'none'"],  # Nenhum objeto pode ser carregado
+    # Restringir URI base a somente o próprio domínio
     "base-uri": ["'self'"],
+    # Restringe a ações de formulários para o próprio domínio
     "form-action": ["'self'"]
 }
-
 # =============================================================================
 # Inicializa o Talisman com a política de CSP definida
 # =============================================================================
@@ -155,14 +113,6 @@ def check_user_agent():
     if 'Mozilla/4.0' in user_agent or 'MSIE 8.0' in user_agent:
         abort(403, description="User-Agent inválido")
 
-
-# Configuração do Redis para sessões (se necessário)
-app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True  # Para garantir que a sessão seja assinada (segura)
-app.config['SESSION_REDIS'] = redis.StrictRedis(host='localhost', port=6379, db=0)
-
-
 # Conectar ao Redis
 redis_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -170,15 +120,26 @@ redis_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    storage_uri="redis://localhost:6379/0",  # Redis como backend de armazenamento
-    default_limits=["200 per day", "50 per hour"]  # Definir limites padrão
+    storage_uri="redis://localhost:6379/0"  # Redis como backend de armazenamento
 )
+
+
+
 
 # =============================================================================
 # Inicializar banco de dados e migrações
 # =============================================================================
 db.init_app(app)
 migrate = Migrate(app, db)
+
+# =============================================================================
+# Configurar Limiter
+# =============================================================================
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"]
+)
 
 # =============================================================================
 # Variável global para rastrear se o cofre foi configurado
@@ -221,8 +182,13 @@ def setup_safe():
 # =============================================================================
 # Função que verifica o reCAPTCHA
 # =============================================================================
-# Função que verifica o reCAPTCHA
 def verify_recaptcha(token: str, action: str) -> bool:
+    """
+    Verifica o token do reCAPTCHA v3 usando a API do Google.
+    :param token: Token retornado pelo reCAPTCHA no frontend
+    :param action: Ação definida (ex.: 'login')
+    :return: True se a verificação foi bem-sucedida e acima do threshold
+    """
     secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
     if not secret_key:
         app.logger.warning("Chave secreta do reCAPTCHA não configurada; verificação ignorada.")
@@ -234,14 +200,17 @@ def verify_recaptcha(token: str, action: str) -> bool:
         "remoteip": request.remote_addr,
     }
     try:
-        app.logger.info(f"Verificando reCAPTCHA com o token: {token}")
         response = requests.post(
             "https://www.google.com/recaptcha/api/siteverify", 
             data=payload
         )
         result = response.json()
         app.logger.info(f"Resposta do reCAPTCHA: {result}")
-        if result.get("success") and result.get("action") == action and result.get("score", 0) >= RECAPTCHA_THRESHOLD:
+        if (
+            result.get("success")
+            and result.get("action") == action
+            and result.get("score", 0) >= RECAPTCHA_THRESHOLD
+        ):
             return True
         else:
             app.logger.warning(f"Falha na verificação do reCAPTCHA v3. Resultado: {result}")
