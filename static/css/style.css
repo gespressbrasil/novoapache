@@ -1,0 +1,666 @@
+/* 
+   Fonts (exemplo Apple-like):
+   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, 
+                Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   Corpo geral
+============================== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+/* ==============================
+   Preloader
+============================== */
+/* PRELOADER - tela inteira */
+#preloader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column; /* <-- ADICIONADO */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Texto acima da barra */
+.preloader-text {
+  font-size: 1rem;
+  color: #000;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* A trilha (fundo) da barra de progresso */
+.progress-track {
+  width: 250px; 
+  height: 5px;
+  background-color: #e3e3e3;
+  border-radius: 2.5px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* A parte que enche (barra propriamente dita) */
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background-color: #000;
+  transition: width 2s ease;
+}
+
+
+
+/*Texto titulo do ganhadores */
+#unique-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    position: relative;
+  
+}
+#unique-subtitulo {
+  text-align: center;
+  font-size: 1.6rem;
+  color: #6d6d6d;
+  position: relative;
+}
+/* ==============================
+   Cabeçalho minimalista
+============================== */
+.apple-header {
+  background-color: #fefefe;
+  border-bottom: 5px solid #ddd;
+  position: relative;
+  min-height: 1px;
+}
+.apple-nav {
+  display: none; 
+}
+
+
+/* regras cofre*/
+
+#premio-cofre {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: center; /* Centraliza verticalmente */
+  margin-bottom: 2rem ; /* Centraliza a seção na página */
+  margin-left: 2rem;
+  padding: 10px;
+  margin-right: 2rem;
+}
+
+.prize-header, .prize-content, .rules-container {
+  width: 100%;
+  text-align: center; /* Centraliza o texto dentro de cada parte */
+}
+/* Remove os pontinhos (bullets) da lista */
+.rules-container ul {
+  list-style: none; /* Remove os pontinhos (bullets) */
+  padding: 0; /* Remove o padding padrão */
+  margin: 0; /* Remove a margem padrão */
+}
+
+/* Estilo para os itens da lista */
+.rules-container li {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 0; /* Remover o espaço extra */
+}
+
+/* Se você quiser remover a seta (como já foi feito no código) */
+.rules-container li::before {
+  content: ''; /* Não insere nada antes do item da lista */
+}
+
+/* CONTAINER CENTRALIZADOR DA LISTA DE TENTATIVAS */
+.attempts-list-container {
+  display: flex;
+  justify-content: center;    /* Centraliza o conteúdo horizontalmente */
+  width: 100%;                /* Ocupa toda a largura disponível */
+  padding: 2rem 0;           /* Espaçamento no topo e embaixo */
+  /* Você pode ajustar o background se quiser, ex.: background-color: #f9f9fb; */
+}
+
+/* BLOCO DA LISTA DE TENTATIVAS EM SI */
+.attempts-list {
+  background-color: #fff;                 /* Cor de fundo branca */
+  border: 1px solid #eee;                /* Borda suave */
+  padding: 2rem;                         /* Espaçamento interno */
+  border-radius: 8px;                    /* Cantos arredondados */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra leve */
+  width: 80%;                            /* Ajuste de largura */
+  max-width: 800px;                      /* Limite de largura máxima */
+  margin: 0 auto;                        /* Caso queira centralizar */
+}
+
+/* TÍTULO DA LISTA (TENTATIVAS RECENTES) */
+.attempts-list h2 {
+  font-size: 1.6rem;         /* Tamanho da fonte */
+  font-weight: 600;          /* Pode usar 700 se quiser mais destaque */
+  color: #333;               /* Cor do texto */
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* LISTA SEM BOLINHAS */
+.attempts-list ul {
+  list-style: none;          /* Remove as bolinhas */
+  padding-left: 0;           /* Remove possível padding padrão */
+  margin: 0;                 /* Remove margem default */
+}
+
+/* ITENS DA LISTA */
+.attempts-list li {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.5rem 0;          /* Espaçamento vertical em cada item */
+  border-bottom: 1px solid #eee;  /* Linha divisória suave */
+  color: #666;                /* Cor do texto */
+}
+
+/* REMOVE A BORDA DO ÚLTIMO ITEM */
+.attempts-list li:last-child {
+  border-bottom: none;
+}
+/* ==============================
+   QUICK LINKS (TOPO)
+============================== */
+.quick-links-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  text-align: left; /* ou center, se preferir */
+}
+.quick-links-container h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.quick-links-buttons {
+  display: flex;
+  flex-wrap: wrap;  /* permite quebrar linha no mobile */
+  gap: 1rem;        /* espaço entre botões */
+}
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+  border-radius: 9999px;
+  padding: 0.6rem 1.2rem;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.link-button:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+@media (max-width: 768px) {
+  .quick-links-container {
+    padding: 0 1.5rem;
+  }
+  .quick-links-container h2 {
+    font-size: 1.4rem;
+  }
+  .link-button {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* ==============================
+   Hero Section (Título Principal)
+============================== */
+.hero-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  text-align: left;
+}
+.hero-section .hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+.hero-section .hero-subtitle {
+  font-size: 1.4rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    margin: 1rem auto;
+    padding: 0 1rem;
+  }
+  .hero-section .hero-title {
+    font-size: 2.2rem;
+  }
+  .hero-section .hero-subtitle {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 480px) {
+  .hero-section .hero-title {
+    font-size: 1.8rem;
+  }
+  .hero-section .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* ==============================
+   Slideshow (banner-slideshow)
+   (Igual ao seu código antigo)
+============================== */
+.banner-slideshow {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  background-color: #fafafa;
+}
+.slide {
+  position: absolute;
+  top: 0; left: 100%;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: left 1.2s ease-in-out;
+}
+.slide.active {
+  left: 0;
+}
+
+/* ==============================
+   Seção principal (container)
+============================== */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* ==============================
+   Mensagens Flash
+============================== */
+.flashes {
+  position: absolute; /* Ou fixed, dependendo de quando você quer que o elemento se mova com a página */
+  top: 0; /* Posiciona o elemento no topo da página */
+  left: 50%; /* Posiciona o elemento no meio da página */
+  transform: translateX(-50%); /* Ajusta o deslocamento para que o elemento fique perfeitamente centralizado */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 9999; /* acima do resto do site */
+}
+
+/* Cada banner */
+.message-banner {
+  padding: 12px 18px;
+  border-radius: 8px;
+  color: #fff;
+  animation: fadeIn 0.5s ease-in forwards,
+             fadeOut 0.5s ease-out 3.5s forwards; 
+  /* fadeIn 0.5s + aguarda 3s + fadeOut 0.5s (total ~4s) */
+  opacity: 0; /* para iniciar invisível e fadeIn */
+}
+
+/* Exemplo de cor para 'success' */
+.message-banner.success {
+  background-color: #4CAF50; /* verde */
+}
+
+/* Exemplo de cor para 'error' */
+.message-banner.error {
+  background-color: #666; /* vermelho */
+}
+
+/* Se tiver 'info' ou 'warning', pode criar mais classes */
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-10px); }
+}
+.message-banner.success {
+  background-color: #e0f8e0;
+  color: #0f5132;
+  border-color: #badbcc;
+}
+.message-banner.error {
+  background-color: #666;
+  color: #ffffff;
+  border-color: #000000;
+}
+.message-banner.info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border-color: #bee5eb;
+}
+
+/* ==============================
+   Instrução: "Escolha 6 números..."
+============================== */
+.numbers-instruction {
+  text-align: center;
+  margin: 2rem 0 1rem;
+}
+.numbers-instruction h2 {
+  font-size: 1.4rem;
+  color: #333;
+}
+
+/* ==============================
+   Formulário (Cofre)
+============================== */
+.form-container-section {
+  margin-bottom:2rem;
+}
+.form-container {
+  background-color: #fff;
+  padding: 2rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto 1.5rem auto;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.form-group input {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.submit-btn {
+  display: inline-block;
+  background-color: #000;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.submit-btn:hover {
+  background-color: #444;
+}
+
+/* ==============================
+   Dígitos e Grade de Números
+============================== */
+.digit-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 1.5rem auto;
+}
+.digit-display span {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.25rem;
+  background-color: #f5f5f7;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+.digit-display span.selected {
+  background-color: #000;
+  color: #fff;
+}
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  max-width: 550px;
+  margin: 0 auto 1.5rem auto;
+}
+.num-btn {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 1rem;
+}
+.num-btn:hover {
+  background-color: #eaeaea;
+}
+.num-btn.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* ==============================
+   Relógio
+============================== */
+.clock-container {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* ==============================
+   Lista de Tentativas
+============================== */
+.attempts-list {
+  margin-bottom: 3rem;
+}
+.attempts-list h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.attempts-list ul {
+  list-style: none;
+  padding: 0;
+}
+.attempts-list li {
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  padding: 0.8rem;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+/* ==============================
+   Banners (3 cartões)
+   - Lado a lado no desktop (wrap),
+     rolagem horizontal no mobile
+============================== */
+.banner-container {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem auto;
+  justify-content: center;
+  max-width: 1200px;
+  padding: 0 1rem;
+  flex-wrap: wrap;          /* no desktop, podem quebrar linha */
+}
+.banner-item {
+  flex: 0 0 calc(33.333% - 2rem); /* 3 por linha no desktop */
+  background-color: #f2f2f2;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+.banner-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.banner-item h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 1rem 0;
+}
+.banner-item p {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+.banner-item a {
+  font-size: 1rem;
+  color: #0071e3;
+  text-decoration: none;
+}
+.banner-item:hover {
+  transform: translateY(-10px);
+}
+
+/* MOBILE: rolagem horizontal */
+
+
+@media (max-width: 768px) {
+  .quick-links-buttons {
+    flex-wrap: nowrap;         /* não quebra linha */
+    overflow-x: auto;          /* rolagem horizontal */
+    -webkit-overflow-scrolling: touch; /* mais suave no iOS */
+  }
+  .link-button {
+    flex: 0 0 auto;            /* mantém largura “fixa” */
+    white-space: nowrap;       /* não quebra o texto */
+    font-size: 0.7rem;         /* diminui a fonte */
+    padding: 0.3rem 1rem;      /* diminui o padding */
+  }
+}
+@media (max-width: 768px) {
+  .banner-container {
+    flex-wrap: nowrap;        /* não quebra linha no mobile */
+    overflow-x: auto;         /* rolagem horizontal */
+    -webkit-overflow-scrolling: touch; 
+  }
+  .banner-item {
+    flex: 0 0 auto;           /* não encolhe/cresce */
+    width: 280px;             /* define largura fixa no mobile */
+    margin-right: 1rem;       /* espaçamento entre cards */
+  }
+
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+}
+
+/* ==============================
+   Caixa de Prêmio e Regras
+============================== */
+.prize-info.improved-box {
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+}
+.prize-header {
+  text-align: center;
+}
+.prize-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+.prize-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+.prize-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+}
+.rules-container {
+  background-color: #fafafa;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+.rules-container h3 {
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+.rules-container ul {
+  list-style: none;
+  margin-left: 1.3rem;
+  line-height: 1.5;
+}
+
+/* ==============================
+   Rodapé
+============================== */
+.apple-footer {
+  background-color: #f9f9fb;
+  border-top: 1px solid #eee;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #666;
+}
+.apple-footer .footer-info {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: left;
+}
+.apple-footer .footer-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.apple-footer .footer-info p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+.apple-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}

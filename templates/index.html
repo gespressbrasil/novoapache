@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cofre da Sorte</title>
+  
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='imagens/favicon.ico') }}">
+  
+  <!-- Fonte (Apple-like) -->
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  
+  <!-- reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"></script>
+</head>
+<body onload="updateClock('{{ safe.reset_time.isoformat() }}')">
+
+  <div id="preloader">
+    <div class="preloader-text" id="preloaderText"></div> 
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+  
+    <!-- A trilha (fundo) e a barra -->
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Cabeçalho minimalista (pode estar vazio) -->
+  <header class="apple-header"></header>
+
+  <!-- 
+    LINKS RÁPIDOS NO TOPO 
+    Botões estilo Apple-like, inclusive "Prêmio do Cofre"
+    que rola até a parte de prêmio.
+  -->
+  <section class="quick-links-container">
+    <h2>Links rápidos</h2>
+    <div class="quick-links-buttons">
+      <!-- Botão 1: Post da Promoção -->
+      <a 
+        class="link-button" 
+        href="https://www.instagram.com/p/POST_OFICIAL" 
+        target="_blank"
+      >
+        Post da Promoção ↗
+      </a>
+
+      <!-- Botão 2: Seja um patrocinador (leva ao WhatsApp) -->
+      <a 
+        class="link-button" 
+        href="https://wa.me/5531996765285"
+        target="_blank"
+      >
+        Seja um patrocinador ↗
+      </a>
+
+      <!-- Botão 3: Tentar a Sorte (scroll até o formulário do cofre) -->
+      <a 
+        class="link-button" 
+        href="#form-cofre"
+      >
+        Tentar a Sorte ↗
+      </a>
+
+      <!-- Botão 4: “Prêmio do Cofre” (leva ao ID da seção do prêmio) -->
+      <a 
+        class="link-button"
+        href="#premio-cofre"
+      >
+        Prêmio do Cofre ↗
+      </a>
+    </div>
+  </section>
+
+  <!-- Hero Text - maior e alinhado à esquerda -->
+  <section class="hero-section">
+    <h1 class="hero-title">Hoje é o seu dia de sorte?</h1>
+    <p class="hero-subtitle">Descubra agora mesmo ao abrir o Cofre da Sorte.</p>
+  </section>
+
+   <!-- SLIDESHOW de banners (agora com 2 banners diferentes) -->
+<div class="banner-slideshow">
+  <!-- Banner para celular -->
+  <div class="slide mobile-banner" id="mobile-banner"></div>
+
+  <!-- Banner para desktop -->
+  <div class="slide desktop-banner" id="desktop-banner"></div>
+</div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for category, message in messages %}
+        <div class="message-banner {{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+    
+    <!-- Texto “Escolha 6 números de 1 a 60” (ou 69) acima do Formulário -->
+    <section class="numbers-instruction">
+      <h2>Escolha 6 números de 1 a 60</h2>
+    </section>
+
+    <!-- Formulário (Cofre) -->
+    <section class="form-container-section" id="form-cofre">
+      <form method="POST" class="form-container" onsubmit="onSubmit(event)">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+          <label for="username">Seu @ do Instagram</label>
+          <input 
+            type="text"
+            id="username"
+            name="username"
+            required
+            placeholder="@seuusuario"
+            maxlength="100"
+          >
+        </div>
+
+        <!-- Exibição dos Números Selecionados -->
+        <div class="digit-display">
+          <span id="digit1"></span>
+          <span id="digit2"></span>
+          <span id="digit3"></span>
+          <span id="digit4"></span>
+          <span id="digit5"></span>
+          <span id="digit6"></span>
+        </div>
+
+        <!-- Grade de Seleção de Números -->
+        <div class="numbers-grid">
+          {% for i in range(1, 61) %}
+            <button 
+              type="button"
+              class="num-btn"
+              onclick="toggleNumber(this, '{{ i }}')"
+              aria-pressed="false"
+            >{{ i }}</button>
+          {% endfor %}
+        </div>
+
+        <!-- Campo Oculto para Armazenar os Números -->
+        <input type="hidden" id="numbers" name="numbers" value="">
+
+        <!-- Campo oculto para o token do reCAPTCHA -->
+      <input type="hidden" id="recaptchaResponse" name="g-recaptcha-response">
+      
+        <!-- Botão de Envio -->
+        <button type="submit" class="submit-btn">Tentar Abrir o Cofre</button>
+      </form>
+
+      <!-- Relógio de Contagem Regressiva -->
+      <div class="clock-container">
+        <p>Tempo para o reset: <span id="clock"></span></p>
+      </div>
+
+      <!-- Lista de Tentativas Recentes -->
+       
+      <section class="attempts-list-container">
+        <section class="attempts-list">
+          <h2>Tentativas Recentes</h2>
+          <ul>
+            {% for attempt in attempts %}
+              {% if safe.winner == attempt.username %}
+                <!-- Se for o vencedor (o "winner" do cofre), exibe mensagem de acerto -->
+                <li>
+                  {{ attempt.timestamp.strftime('%d/%m/%Y %H:%M:%S') }} - 
+                  Parabéns, você acertou a senha: {{ attempt.attempt }}
+                </li>
+              {% else %}
+                <!-- Caso contrário, exibe "senha incorreta" -->
+                <li>
+                  {{ attempt.timestamp.strftime('%d/%m/%Y %H:%M:%S') }} - 
+                  {{ attempt.username }} - senha incorreta: {{ attempt.attempt }}
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </section>
+      </section>
+
+    <div class="banner-header">
+      <h2 id="unique-title">Últimos Ganhadores</h2>
+      <p id="unique-subtitulo">Seja você o próximo.</p>
+  </div>
+  
+  <!-- Banners (para exibir lado a lado no desktop e scroll horizontal no mobile) -->
+ <!-- Banners (para exibir lado a lado no desktop e scroll horizontal no mobile) -->
+ <div class="banner-container">
+  <div class="banner-item">
+      <img src="/static/imagens/avatar1.jpg" alt="avatar1">
+      <h2>Primeiro Ganhador</h2>
+      <p>2 Mil Reais</p>
+      <a href="#">Veja mais</a>
+  </div>
+  <div class="banner-item">
+      <img src="/static/imagens/avatar2.jpg" alt="avatar2">
+      <h2>Segundo Ganhador </h2>
+      <p>Carregando...</p>
+      <a href="#">Veja mais</a>
+  </div>
+  <div class="banner-item">
+      <img src="/static/imagens/avatar3.jpg" alt="avatar3">
+      <h2>Terceiro Ganhador</h2>
+      <p>Carregando</p>
+      <a href="#">Veja mais</a>
+  </div>
+</div>
+  
+  
+
+    <!-- Seção do Prêmio e Regras (adicione um ID para ancorar com "Prêmio do Cofre") -->
+    <section class="prize-info improved-box" id="premio-cofre">
+      <div class="prize-header">
+        <h2 class="prize-title">Prêmio do Cofre</h2>
+        <p class="prize-subtitle">Um prêmio exclusivo esperando por você.</p>
+      </div>
+      <div class="prize-content">
+        <p>
+          Este cofre contém: <strong>{{ safe.prize }}</strong>, oferecido pelo patrocinador.
+        </p>
+        <p>
+          Para participar, siga o perfil do patrocinador: 
+          <a href="https://www.instagram.com/patrocinador_oficial" target="_blank">@patrocinador_oficial</a> 
+          e interaja no 
+          <a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post Oficial</a>.
+        </p>
+      </div>
+      <div class="rules-container">
+        <h3>Regras para Ganhar</h3>
+        <ul>
+          <li>↗ Seguir <strong>@patrocinador_oficial</strong> no Instagram antes de abrir o cofre.</li>
+          <li>↗ Curtir e comentar no Post Oficial <strong>antes</strong> de abrir o cofre.</li>
+          <li>↗ O vencedor será validado pela ordem das ações (seguir, curtir, comentar).</li>
+          <li>↗ Caso não tenha cumprido todas as regras <em>antes</em> de abrir, perde o direito ao prêmio.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="apple-footer">
+    <div class="footer-info">
+      <h3>Como funciona o Cofre da Sorte </h3>
+      <p>
+        O Cofre da Sorte é um sistema de premiação online que permite que qualquer pessoa participe 
+        usando apenas seu @ do Instagram. Não coletamos dados sensíveis, apenas o necessário 
+        para validar suas tentativas e identificar o(a) vencedor(a).
+      </p>
+      <p>
+        A cada reset, uma nova combinação é gerada. Se você acertar, ganha o prêmio. 
+        Mas lembre-se de seguir todas as regras de participação para não perder sua chance!
+      </p>
+      <p style="font-size: 0.9rem; color: #666;">
+        Nós da equipe Cofre da Sorte nos resguardamos quanto a eventuais erros ou 
+        instabilidades no site que possam impedir as tentativas momentaneamente. 
+        Em caso de dúvidas, entre em contato conosco.
+      </p>
+    </div>
+    <p style="font-size: 0.9rem; color: #666; margin-top:1rem;">
+      Cofre da Sorte - Direitos Reservados 2024
+    </p>
+  
+    <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">
+      Este site utiliza SSL/TLS e reCAPTCHA para proteger seus dados fique tranquilo.
+    </p>
+  </footer>
+
+   <script>
+  window.addEventListener('load', function() {
+  // Escolhe uma frase aleatória
+  const frases = [
+    "Carregando sua sorte...",
+    "Abrir o cofre sem regras? Não vale!",
+    "Hoje é seu dia de sorte!",
+    "Cuidado! Sem regras, sem prêmio!",
+    "Prepare-se para ganhar!",
+    "Só mais um instante...",
+    "Se não seguiu as regras, perdeu!",
+    "A sorte está a caminho...",
+    "Que a sorte esteja com você!",
+    "Verificando suas possibilidades...",
+  ];
+
+  // Escolhe uma frase aleatória
+  const randIndex = Math.floor(Math.random() * frases.length);
+  document.getElementById('preloaderText').textContent = frases[randIndex];
+
+  // Inicia a animação da barra de progresso
+  const fill = document.getElementById('progressFill');
+
+  // Para garantir que a transição da barra aconteça de forma imediata
+  fill.style.transition = 'none'; // Remove qualquer transição que possa interferir
+  fill.style.width = '0%';  // Reseta o preenchimento da barra para 0%
+
+  // Aciona o preenchimento da barra
+  setTimeout(() => {
+    fill.style.transition = 'width 1.5s ease';  // Reaplica a transição
+    fill.style.width = '100%';  // Preenche a barra até 100%
+  }, 50);  // Um pequeno atraso para garantir que a transição seja aplicada corretamente
+
+  // Esconde o preloader após a animação
+  setTimeout(() => {
+    document.getElementById('preloader').style.display = 'none';
+  }, 2200); // O tempo de exibição do preloader, ajustado para o fim da animação
+});
+  </script>
+
+  <script>
+    // Lógica para seleção de números
+    let selectedNumbers = [];
+    function toggleNumber(button, number) {
+      const num = parseInt(number, 10);
+      if (selectedNumbers.includes(num)) {
+        selectedNumbers = selectedNumbers.filter(n => n !== num);
+        button.classList.remove('selected');
+        button.setAttribute('aria-pressed', 'false');
+      } else if (selectedNumbers.length < 6) {
+        selectedNumbers.push(num);
+        button.classList.add('selected');
+        button.setAttribute('aria-pressed', 'true');
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      const display = document.querySelectorAll('.digit-display span');
+      display.forEach((span, index) => {
+        span.textContent = selectedNumbers[index] || '';
+        if (selectedNumbers[index]) {
+          span.classList.add('selected');
+        } else {
+          span.classList.remove('selected');
+        }
+      });
+      const hiddenInput = document.querySelector("input[name='numbers']");
+      hiddenInput.value = selectedNumbers.join(',');
+    }
+
+    // Relógio (countdown)
+    function updateClock(resetTime) {
+      const resetDate = new Date(resetTime);
+      const now = new Date();
+      const diff = resetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("clock").innerText = "Resetando...";
+        return;
+      }
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      document.getElementById("clock").innerText = `${hours}h ${minutes}m ${seconds}s`;
+
+      if (diff > 0) {
+        setTimeout(() => updateClock(resetTime), 1000);
+      }
+    }
+  </script>
+
+<script>
+  // Lista de banners para celular
+ const mobileBanners = [
+   "mobile-banner1.gif",
+  
+ ];
+ 
+ // Lista de banners para desktop
+ const desktopBanners = [
+   "desktop-banner1.gif",
+ 
+ ];
+ 
+ // Escolher um banner aleatório para celular
+ const mobileChosenBanner = mobileBanners[Math.floor(Math.random() * mobileBanners.length)];
+ document.getElementById("mobile-banner").style.backgroundImage = `url('/static/imagens/${mobileChosenBanner}')`;
+ 
+ // Escolher um banner aleatório para desktop
+ const desktopChosenBanner = desktopBanners[Math.floor(Math.random() * desktopBanners.length)];
+ document.getElementById("desktop-banner").style.backgroundImage = `url('/static/imagens/${desktopChosenBanner}')`;
+ </script>
+
+ <script>
+  // Função do reCAPTCHA - envia o token invisível ao backend
+  function onSubmit(event) {
+    event.preventDefault();
+    grecaptcha.ready(function() {
+      grecaptcha.execute('6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv', {action: 'login'}).then(function(token) {
+        // Adiciona o token ao formulário
+        document.getElementById('recaptchaResponse').value = token;
+        document.forms[0].submit(); // Submete o formulário
+      });
+    });
+  }
+</script>
+  
+</body>
+</html>
