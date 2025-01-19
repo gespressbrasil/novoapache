@@ -4,7 +4,7 @@ import re
 import csv
 import io
 import logging
-from markupsafe import escape, Markup
+from markupsafe import escape, Markup  
 import requests
 from datetime import datetime, timedelta, timezone
 from flask import Flask,render_template,request,redirect,url_for,flash,send_file,abort
@@ -45,7 +45,6 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 
 
 # Configuração do reCAPTCHA v3
-# Carregar as chaves do reCAPTCHA a partir das variáveis de ambiente
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
@@ -53,7 +52,7 @@ RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um
 # Configuração do Flask
 app.config['RECAPTCHA_PUBLIC_KEY'] = RECAPTCHA_PUBLIC_KEY
 app.config['RECAPTCHA_PRIVATE_KEY'] = RECAPTCHA_PRIVATE_KEY
-app.config['RECAPTCHA_OPTIONS'] = {'theme': 'dark'}  # Tema do reCAPTCHA (opcional)
+app.config['RECAPTCHA_OPTIONS'] = {'theme': 'dark'}
 
 # Inicializar o reCAPTCHA
 recaptcha = ReCaptcha(app)
@@ -72,11 +71,6 @@ else:
 # Logando o valor do threshold
 app.logger.info(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
-# Verifique se as variáveis estão carregadas corretamente
-print(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
-print(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
-print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
-
 @app.route('/formulario', methods=['POST'])
 def formulario():
     recaptcha_response = request.form.get('g-recaptcha-response')
@@ -87,12 +81,9 @@ def formulario():
         return redirect(request.url)
     
     # Seu código para processar o formulário aqui
-
     flash('Formulário enviado com sucesso!', 'success')
     return redirect(request.url)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    
 # Definição da Política de Content Security Policy (CSP)
 # =============================================================================
 CSP_POLICY = {
