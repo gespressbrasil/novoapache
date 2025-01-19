@@ -19,6 +19,9 @@ from wtforms import StringField, HiddenField, SubmitField
 from wtforms.validators import InputRequired, Length
 from flask_talisman import Talisman 
 import redis
+from flask_compress import Compress
+from flask_assets import Environment, Bundle
+
 
 
 
@@ -27,10 +30,27 @@ import redis
 # =============================================================================
 load_dotenv()
 
+# Verifique se as variáveis estão carregadas corretamente
+print("RECAPTCHA_PUBLIC_KEY:", os.getenv("RECAPTCHA_PUBLIC_KEY"))
+print("RECAPTCHA_PRIVATE_KEY:", os.getenv("RECAPTCHA_PRIVATE_KEY"))
 # =============================================================================
 # Configuração básica do Flask
 # =============================================================================
 app = Flask(__name__)
+
+Compress(app)  # Ativa a compressão Gzip
+
+
+assets = Environment(app)
+js = Bundle('src/js/*.js', filters='jsmin', output='dist/js/all.min.js')
+assets.register('js_all', js)
+
+css = Bundle('src/css/*.css', filters='cssmin', output='dist/css/all.min.css')
+assets.register('css_all', css)
+
+
+
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
     "SQLALCHEMY_DATABASE_URI", 
@@ -46,6 +66,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # =============================================================================
 # Configuração do Google reCAPTCHA v3
 # =============================================================================
+# Verifique se as variáveis de ambiente foram carregadas corretamente
 # Configuração do Google reCAPTCHA v3
 RECAPTCHA_PUBLIC_KEY = "6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"
 RECAPTCHA_PRIVATE_KEY = "6Lc2-q8qAAAAAGd23DAf4NPZVfA8pKUAggasNp2K"
@@ -55,6 +76,8 @@ RECAPTCHA_THRESHOLD = 0.5  # Você pode definir o valor que desejar
 app.config["RECAPTCHA_PUBLIC_KEY"] = RECAPTCHA_PUBLIC_KEY
 app.config["RECAPTCHA_PRIVATE_KEY"] = RECAPTCHA_PRIVATE_KEY
 app.config["RECAPTCHA_THRESHOLD"] = RECAPTCHA_THRESHOLD
+
+
 app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
