@@ -49,11 +49,12 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # Verifique se as variáveis de ambiente foram carregadas corretamente
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
+
 if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
     app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
 else:
     app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
-
 
 
 # Definição da Política de Content Security Policy (CSP)
@@ -197,33 +198,29 @@ def verify_recaptcha(token: str, action: str) -> bool:
     secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
     if not secret_key:
         app.logger.warning("Chave secreta do reCAPTCHA não configurada; verificação ignorada.")
-        return True
+        return False  # Alterado para False, pois a verificação não deve ser ignorada
 
     payload = {
         "secret": secret_key,
         "response": token,
         "remoteip": request.remote_addr,
     }
+    
     try:
-        response = requests.post(
-            "https://www.google.com/recaptcha/api/siteverify", 
-            data=payload
-        )
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", data=payload)
         result = response.json()
         app.logger.info(f"Resposta do reCAPTCHA: {result}")
-        if (
-            result.get("success")
-            and result.get("action") == action
-            and result.get("score", 0) >= RECAPTCHA_THRESHOLD
-        ):
+
+        # Verifica a resposta do reCAPTCHA
+        if result.get("success") and result.get("action") == action and result.get("score", 0) >= RECAPTCHA_THRESHOLD:
+            app.logger.info("Verificação reCAPTCHA bem-sucedida.")
             return True
         else:
             app.logger.warning(f"Falha na verificação do reCAPTCHA v3. Resultado: {result}")
             return False
-    except Exception as e:
-        app.logger.error(f"Erro ao verificar reCAPTCHA: {e}")
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Erro de requisição ao verificar o reCAPTCHA: {e}")
         return False
-
 # =============================================================================
 # Validações
 # =============================================================================
