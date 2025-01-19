@@ -51,11 +51,24 @@ RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
 
+# Verificação das chaves do reCAPTCHA
 if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
     app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
 else:
     app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
+    app.logger.info(f"Chave privada do reCAPTCHA: {RECAPTCHA_PRIVATE_KEY}")
 
+# Logando as variáveis para debug (em vez de print)
+app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+
+# Verificar o valor do threshold
+app.logger.info(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+
+# Para debug, caso queira imprimir no console (não recomendado em produção)
+print(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+print(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
 # Definição da Política de Content Security Policy (CSP)
 # =============================================================================
