@@ -24,12 +24,13 @@ body {
 /* PRELOADER - tela inteira */
 #preloader {
   position: fixed;
-  top: 0; left: 0;
+  top: 0; 
+  left: 0;
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.95);
   display: flex;
-  flex-direction: column; /* <-- ADICIONADO */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
@@ -45,7 +46,7 @@ body {
 
 /* A trilha (fundo) da barra de progresso */
 .progress-track {
-  width: 250px; 
+  width: 250px;
   height: 5px;
   background-color: #e3e3e3;
   border-radius: 2.5px;
@@ -61,9 +62,22 @@ body {
   transition: width 2s ease;
 }
 
+/* Para dispositivos móveis, ajusta a largura e a animação */
+@media (max-width: 768px) {
+  /* Ajusta a largura da barra de progresso para dispositivos móveis */
+  .progress-track {
+    width: 200px; /* Ajuste a largura da barra no mobile */
+  }
 
-
+  /* Aumenta a duração da animação para dispositivos móveis */
+  .progress-fill {
+    transition: width 3s ease; /* Maior duração da animação no mobile */
+  }
+}
+/* ==============================
 /*Texto titulo do ganhadores */
+/* ==============================*/
+
 #unique-title {
     text-align: center;
     font-size: 2rem;
@@ -275,24 +289,81 @@ body {
    Slideshow (banner-slideshow)
    (Igual ao seu código antigo)
 ============================== */
+/* Ajuste para o slideshow */
 .banner-slideshow {
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 50vh; /* Definindo a altura como 50% da altura da tela */
   overflow: hidden;
-  background-color: #fafafa;
+  margin: 0; /* Remover qualquer margem indesejada */
+  padding: 0;
 }
+
+/* Ajusta a exibição de cada slide */
 .slide {
   position: absolute;
-  top: 0; left: 100%;
   width: 100%;
   height: 100%;
+  transition: left 1s ease;
   background-size: cover;
   background-position: center;
-  transition: left 1.2s ease-in-out;
+  display: none; /* Esconde todos os banners inicialmente */
 }
-.slide.active {
-  left: 0;
+
+/* Mobile - exibe o banner específico para dispositivos móveis */
+.mobile-banner {
+  display: none; /* Inicialmente escondido para desktop */
+  width: 100%;
+  height: 50vh; /* Definir altura responsiva para o banner móvel */
+  margin: 0;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Desktop - exibe o banner específico para desktop */
+.desktop-banner {
+  display: none; /* Inicialmente escondido para mobile */
+  width: 100%;
+  height: 50vh; /* Ajuste a altura conforme necessário para desktop */
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 768px) {
+  /* Para dispositivos móveis, esconda o banner desktop */
+  .desktop-banner {
+    display: none;
+  }
+
+  /* Exibe o banner móvel */
+  .mobile-banner {
+    display: block;
+    width: 100%;
+    height: 50vh; /* Ajuste a altura para mobile (50% da altura da tela) */
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Para desktop, esconda o banner móvel */
+  .mobile-banner {
+    display: none;
+  }
+
+/* Exibe o banner desktop */
+.desktop-banner {
+  display: block;
+  width: 70%; /* Largura do banner no desktop */
+  height: 50vh; /* Ajuste a altura para desktop (50% da altura da tela) */
+  background-size: cover;
+  background-position: center; /* Alinha a imagem no centro */
+  margin: 0 auto; /* Centraliza o banner horizontalmente */
+  position: relative;
+}
 }
 
 /* ==============================
