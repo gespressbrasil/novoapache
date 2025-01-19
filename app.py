@@ -17,6 +17,7 @@ from db import db, Attempt, Safe, generate_combination
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField, SubmitField
 from wtforms.validators import InputRequired, Length
+from flask_recaptcha import ReCaptcha
 from flask_talisman import Talisman 
 import redis
 
@@ -46,14 +47,23 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # =============================================================================
 # Configuração do Google reCAPTCHA v3
 # =============================================================================
-# Verifique se as variáveis de ambiente foram carregadas corretamente
+# Carregar as chaves do reCAPTCHA a partir das variáveis de ambiente
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
 
+# Configuração do Flask
+app.config['RECAPTCHA_PUBLIC_KEY'] = RECAPTCHA_PUBLIC_KEY
+app.config['RECAPTCHA_PRIVATE_KEY'] = RECAPTCHA_PRIVATE_KEY
+app.config['RECAPTCHA_OPTIONS'] = {'theme': 'dark'}  # Tema do reCAPTCHA (opcional)
+
+# Inicializar o reCAPTCHA
+recaptcha = ReCaptcha(app)
+
+# Logando as variáveis para debug
 app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
-app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+
 # Verificação das chaves do reCAPTCHA
 if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
     app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
@@ -61,17 +71,30 @@ else:
     app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
     app.logger.info(f"Chave privada do reCAPTCHA: {RECAPTCHA_PRIVATE_KEY}")
 
-# Logando as variáveis para debug (em vez de print)
-app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
-app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
-
-# Verificar o valor do threshold
+# Logando o valor do threshold
 app.logger.info(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
-# Para debug, caso queira imprimir no console (não recomendado em produção)
+# Verifique se as variáveis estão carregadas corretamente
 print(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 print(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+
+@app.route('/formulario', methods=['POST'])
+def formulario():
+    recaptcha_response = request.form.get('g-recaptcha-response')
+
+    # Verificando o reCAPTCHA
+    if not recaptcha.verify(recaptcha_response):
+        flash('Erro de verificação do reCAPTCHA!', 'error')
+        return redirect(request.url)
+    
+    # Seu código para processar o formulário aqui
+
+    flash('Formulário enviado com sucesso!', 'success')
+    return redirect(request.url)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # Definição da Política de Content Security Policy (CSP)
 # =============================================================================
