@@ -21,6 +21,7 @@ from flask_talisman import Talisman
 import redis
 
 
+
 # =============================================================================
 # Carregar variáveis de ambiente (.env)
 # =============================================================================
@@ -113,18 +114,6 @@ def check_user_agent():
     if 'Mozilla/4.0' in user_agent or 'MSIE 8.0' in user_agent:
         abort(403, description="User-Agent inválido")
 
-# Conectar ao Redis
-redis_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
-
-# Inicializar Limiter com Redis como backend de armazenamento
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    storage_uri="redis://localhost:6379/0"  # Redis como backend de armazenamento
-)
-
-
-
 
 # =============================================================================
 # Inicializar banco de dados e migrações
@@ -135,11 +124,23 @@ migrate = Migrate(app, db)
 # =============================================================================
 # Configurar Limiter
 # =============================================================================
+# Configuração do Redis para Flask Limiter
+storage_uri = "redis://localhost:6379/0"
+
+# Configurar um logger
+logging.basicConfig(level=logging.DEBUG)
+
 limiter = Limiter(
     get_remote_address,
     app=app,
+    storage_uri=storage_uri,  # Redis como backend de armazenamento
     default_limits=["200 per day", "50 per hour"]
 )
+
+# Verificar logs
+@app.before_request
+def log_redis_usage():
+    app.logger.debug("Usando Redis como backend para Flask Limiter!")
 
 # =============================================================================
 # Variável global para rastrear se o cofre foi configurado
