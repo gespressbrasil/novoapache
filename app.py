@@ -282,7 +282,7 @@ def index():
         recaptcha_token = request.form.get("g-recaptcha-response", "")
 
         # Verifica reCAPTCHA v3
-        if not verify_recaptcha(recaptcha_token, "login"):
+        if not verify_recaptcha(recaptcha_token):
             flash("Verificação reCAPTCHA falhou. Tente novamente.", "error")
             return redirect(url_for("index"))
 
