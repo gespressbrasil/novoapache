@@ -44,9 +44,7 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 
 
-# =============================================================================
-# Configuração do Google reCAPTCHA v3
-# =============================================================================
+# Configuração do reCAPTCHA v3
 # Carregar as chaves do reCAPTCHA a partir das variáveis de ambiente
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
@@ -95,7 +93,6 @@ def formulario():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 # Definição da Política de Content Security Policy (CSP)
 # =============================================================================
 CSP_POLICY = {
