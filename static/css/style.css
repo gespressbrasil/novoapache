@@ -24,20 +24,19 @@ body {
 /* PRELOADER - tela inteira */
 #preloader {
   position: fixed;
-  top: 0; 
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.95);
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* <-- ADICIONADO */
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
 /* Texto acima da barra */
-.preloader-text {
+#preloaderText {
   font-size: 1rem;
   color: #000;
   margin-bottom: 1rem;
@@ -45,8 +44,8 @@ body {
 }
 
 /* A trilha (fundo) da barra de progresso */
-.progress-track {
-  width: 250px;
+#progressBar {
+  width: 250px; 
   height: 5px;
   background-color: #e3e3e3;
   border-radius: 2.5px;
@@ -55,25 +54,14 @@ body {
 }
 
 /* A parte que enche (barra propriamente dita) */
-.progress-fill {
+#progressFill {
   width: 0%;
   height: 100%;
   background-color: #000;
   transition: width 2s ease;
 }
 
-/* Para dispositivos móveis, ajusta a largura e a animação */
-@media (max-width: 768px) {
-  /* Ajusta a largura da barra de progresso para dispositivos móveis */
-  .progress-track {
-    width: 200px; /* Ajuste a largura da barra no mobile */
-  }
 
-  /* Aumenta a duração da animação para dispositivos móveis */
-  .progress-fill {
-    transition: width 3s ease; /* Maior duração da animação no mobile */
-  }
-}
 /* ==============================
 /*Texto titulo do ganhadores */
 /* ==============================*/
