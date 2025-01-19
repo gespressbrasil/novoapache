@@ -46,12 +46,15 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # =============================================================================
 # Configuração do Google reCAPTCHA v3
 # =============================================================================
-# Verifique se as variáveis de ambiente foram carregadas corretamente
-RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
-RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
+# Configuração do Google reCAPTCHA v3
+RECAPTCHA_PUBLIC_KEY = "6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"
+RECAPTCHA_PRIVATE_KEY = "6Lc2-q8qAAAAAGd23DAf4NPZVfA8pKUAggasNp2K"
+RECAPTCHA_THRESHOLD = 0.5  # Você pode definir o valor que desejar
 
-
+# Carregar as chaves diretamente no Flask config
+app.config["RECAPTCHA_PUBLIC_KEY"] = RECAPTCHA_PUBLIC_KEY
+app.config["RECAPTCHA_PRIVATE_KEY"] = RECAPTCHA_PRIVATE_KEY
+app.config["RECAPTCHA_THRESHOLD"] = RECAPTCHA_THRESHOLD
 app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
