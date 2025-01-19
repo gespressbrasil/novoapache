@@ -46,26 +46,34 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # =============================================================================
 # Configuração do Google reCAPTCHA v3
 # =============================================================================
+# Verifique se as variáveis de ambiente foram carregadas corretamente
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
 
-def verify_recaptcha(token):
-    secret_key = os.getenv("RECAPTCHA_PRIVATE_KEY")
-    payload = {
-        'secret': secret_key,
-        'response': token
-    }
-    try:
-        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
-        result = response.json()
 
-        # Verifica se a resposta foi bem-sucedida e se o score é maior que o limite
-        if result.get('success') and result.get('score', 0) >= 0.5:
-            return True
-        else:
-            return False
-    except requests.exceptions.RequestException as e:
-        print(f"Erro de verificação do reCAPTCHA: {e}")
-        return False
-    
+app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+# Verificação das chaves do reCAPTCHA
+if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
+    app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
+else:
+    app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
+    app.logger.info(f"Chave privada do reCAPTCHA: {RECAPTCHA_PRIVATE_KEY}")
+
+# Logando as variáveis para debug (em vez de print)
+app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+
+# Verificar o valor do threshold
+app.logger.info(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+
+# Para debug, caso queira imprimir no console (não recomendado em produção)
+print(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+print(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
+
 # Definição da Política de Content Security Policy (CSP)
 # =============================================================================
 CSP_POLICY = {
@@ -195,6 +203,42 @@ def setup_safe():
         safe_initialized = True
 
 # =============================================================================
+# Função que verifica o reCAPTCHA
+# =============================================================================
+def verify_recaptcha(token: str, action: str) -> bool:
+    """
+    Verifica o token do reCAPTCHA v3 usando a API do Google.
+    :param token: Token retornado pelo reCAPTCHA no frontend
+    :param action: Ação definida (ex.: 'login')
+    :return: True se a verificação foi bem-sucedida e acima do threshold
+    """
+    secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
+    if not secret_key:
+        app.logger.warning("Chave secreta do reCAPTCHA não configurada; verificação ignorada.")
+        return False  # Alterado para False, pois a verificação não deve ser ignorada
+
+    payload = {
+        "secret": secret_key,
+        "response": token,
+        "remoteip": request.remote_addr,
+    }
+    
+    try:
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", data=payload)
+        result = response.json()
+        app.logger.info(f"Resposta do reCAPTCHA: {result}")
+
+        # Verifica a resposta do reCAPTCHA
+        if result.get("success") and result.get("action") == action and result.get("score", 0) >= RECAPTCHA_THRESHOLD:
+            app.logger.info("Verificação reCAPTCHA bem-sucedida.")
+            return True
+        else:
+            app.logger.warning(f"Falha na verificação do reCAPTCHA v3. Resultado: {result}")
+            return False
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Erro de requisição ao verificar o reCAPTCHA: {e}")
+        return False
+# =============================================================================
 # Validações
 # =============================================================================
 def validate_username(username: str) -> bool:
@@ -282,7 +326,7 @@ def index():
         recaptcha_token = request.form.get("g-recaptcha-response", "")
 
         # Verifica reCAPTCHA v3
-        if not verify_recaptcha(recaptcha_token):
+        if not verify_recaptcha(recaptcha_token, "login"):
             flash("Verificação reCAPTCHA falhou. Tente novamente.", "error")
             return redirect(url_for("index"))
 
