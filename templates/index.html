@@ -14,8 +14,8 @@
   <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   
-  <!-- reCAPTCHA v3 -->
   <script src="https://www.google.com/recaptcha/api.js?render=6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"></script>
+  
 </head>
 <body onload="updateClock('{{ safe.reset_time.isoformat() }}')">
 
@@ -153,8 +153,8 @@
         <!-- Campo Oculto para Armazenar os Números -->
         <input type="hidden" id="numbers" name="numbers" value="">
 
-        <!-- Campo oculto para o token do reCAPTCHA -->
-      <input type="hidden" id="recaptchaResponse" name="g-recaptcha-response">
+       <!-- Campo oculto para o token do reCAPTCHA -->
+      <input type="hidden" name="g-recaptcha-response" id="recaptchaResponse">
       
         <!-- Botão de Envio -->
         <button type="submit" class="submit-btn">Tentar Abrir o Cofre</button>
@@ -392,18 +392,20 @@
  document.getElementById("desktop-banner").style.backgroundImage = `url('/static/imagens/${desktopChosenBanner}')`;
  </script>
 
- <script>
-  // Função do reCAPTCHA - envia o token invisível ao backend
-  function onSubmit(event) {
-    event.preventDefault();
-    grecaptcha.ready(function() {
-      grecaptcha.execute('6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv', {action: 'login'}).then(function(token) {
-        // Adiciona o token ao formulário
-        document.getElementById('recaptchaResponse').value = token;
-        document.forms[0].submit(); // Submete o formulário
-      });
+<script>
+ function onSubmit(event) {
+  event.preventDefault();  // Impede o envio imediato do formulário
+
+  grecaptcha.ready(function() {
+    grecaptcha.execute('6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv', {action: 'login'}).then(function(token) {
+      // Coloca o token gerado no campo oculto
+      document.getElementById('recaptchaResponse').value = token;
+
+      // Submete o formulário
+      document.forms[0].submit(); 
     });
-  }
+  });
+}
 </script>
   
 </body>
