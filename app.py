@@ -51,6 +51,9 @@ RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 RECAPTCHA_THRESHOLD = float(os.getenv("RECAPTCHA_THRESHOLD", 0.5))  # Definir um valor padrão de 0.5, caso não esteja configurado
 
+app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
+app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
+app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 # Verificação das chaves do reCAPTCHA
 if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
     app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
