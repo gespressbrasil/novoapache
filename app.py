@@ -46,9 +46,13 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 # =============================================================================
 # Configuração do Google reCAPTCHA v3
 # =============================================================================
-app.config["RECAPTCHA_PUBLIC_KEY"] = os.getenv("RECAPTCHA_PUBLIC_KEY")
-app.config["RECAPTCHA_PRIVATE_KEY"] = os.getenv("RECAPTCHA_PRIVATE_KEY")
-RECAPTCHA_THRESHOLD = 0.5  # Ajuste conforme necessário
+# Verifique se as variáveis de ambiente foram carregadas corretamente
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
+    app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
+else:
+    app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
 
 
 
