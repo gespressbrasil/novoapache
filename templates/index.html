@@ -6,7 +6,7 @@
   <title>Cofre da Sorte</title>
   
   <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='imagens/favicon.ico') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='imagens/favicon.png') }}">
   
   <!-- Fonte (Apple-like) -->
  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -110,7 +110,7 @@
     <section class="numbers-instruction">
       <h2>Escolha 6 números de 1 a 60</h2>
     </section>
-
+    
     <!-- Formulário (Cofre) -->
     <section class="form-container-section" id="form-cofre">
       <form method="POST" class="form-container" onsubmit="onSubmit(event)">
@@ -242,8 +242,8 @@
         <ul>
           <li>↗ Seguir <strong>@patrocinador_oficial</strong> no Instagram antes de abrir o cofre.</li>
           <li>↗ Curtir e comentar no Post Oficial <strong>antes</strong> de abrir o cofre.</li>
-          <li>↗ O vencedor será validado pela ordem das ações (seguir, curtir, comentar).</li>
-          <li>↗ Caso não tenha cumprido todas as regras <em>antes</em> de abrir, perde o direito ao prêmio.</li>
+          <li>↗ O vencedor será validado pela ordem das ações (seguir, curtir, comentar e compartilhar.).</li>
+          <li>↗ Caso não tenha cumprido todas as regras <em>antes</em> de abrir o cofre, perde o direito ao prêmio.</li>
         </ul>
       </div>
     </section>
@@ -346,6 +346,7 @@
     });
     </script>
 
+
   <script>
     // Lógica para seleção de números
     let selectedNumbers = [];
@@ -402,13 +403,13 @@
 <script>
   // Lista de banners para celular
  const mobileBanners = [
-   "mobile-banner1.gif",
+   "mobile-banner1.png",
   
  ];
  
  // Lista de banners para desktop
  const desktopBanners = [
-   "desktop-banner1.gif",
+   "desktop-banner1.png",
  
  ];
  
