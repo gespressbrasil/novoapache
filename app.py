@@ -394,6 +394,9 @@ def index():
 
         # Redireciona para a página inicial após o processamento do formulário
         return redirect(url_for("index"))
+    
+    # Passa as tentativas para o template, bem como o número total
+    total_attempts = Attempt.query.count()  # Conta o total de tentativas feitas
 
     # Cálculo opcional de tempo restante para reset
     days = hours = minutes = 0
@@ -409,11 +412,14 @@ def index():
         form=form,
         safe=safe,
         attempts=attempts,
+        total_attempts=total_attempts,  # Passando o total de tentativas para o template
         days=days,
         hours=hours,
         minutes=minutes,
         recaptcha_site_key=app.config.get("RECAPTCHA_PUBLIC_KEY"),
     )
+
+
 # =============================================================================
 # Rota Winner
 # =============================================================================
