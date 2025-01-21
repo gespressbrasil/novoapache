@@ -1,5 +1,5 @@
 from app import app  # Certifique-se de importar o seu app
-from db import db, Safe
+from db import db, Safe, Attempt
 
 # Criar o contexto da aplicação
 with app.app_context():
@@ -8,8 +8,12 @@ with app.app_context():
         safe = Safe.query.first()  # ou Safe.query.filter_by(winner=None).first() dependendo do seu caso
 
         if safe:  # Verifica se o cofre foi encontrado
+            # Exclui todas as tentativas antes de resetar o cofre
+            Attempt.query.delete()
+            db.session.commit()  # Confirma a exclusão das tentativas
+
             # Resetando o cofre com uma nova combinação, prêmio e doador
-            safe.reset(new_combination="12-13-14-15-22-19", new_prize="2 MIL REAIS NO PIX!", new_donor="GESPRESS BRASIL LTDA")
+            safe.reset(new_combination="11-22-33-53-54-18", new_prize=" 2.000,00 MIL REAIS!", new_donor="@mullerfp")
             db.session.commit()  # Salva as alterações no banco de dados
 
             # Exibe a nova combinação resetada
