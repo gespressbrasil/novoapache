@@ -21,6 +21,7 @@ from flask_talisman import Talisman
 import redis
 from flask_compress import Compress
 from flask_assets import Environment, Bundle
+from zoneinfo import ZoneInfo
 
 
 
@@ -332,6 +333,8 @@ def index():
     """
     Página principal com o formulário para tentar abrir o cofre.
     """
+    from zoneinfo import ZoneInfo  # Certifique-se de ter esta importação (Python 3.9+)
+
     safe = Safe.query.first()
 
     if not safe:
@@ -343,7 +346,21 @@ def index():
         flash("O cofre já foi aberto! Parabéns ao vencedor!", "success")
         return redirect(url_for("winner"))
 
-    attempts = Attempt.query.order_by(Attempt.timestamp.desc()).limit(10).all()
+    # 1) Busca as tentativas salvas em UTC (sem tzinfo)
+    attempts_utc = Attempt.query.order_by(Attempt.timestamp.desc()).limit(10).all()
+    
+    # 2) Converte cada tentativa explicitamente para fuso de São Paulo
+    tz_sp = ZoneInfo("America/Sao_Paulo")
+    attempts = []
+    for a in attempts_utc:
+        attempts.append({
+            "id": a.id,
+            "username": a.username,
+            "attempt": a.attempt,
+            # Forçando a tratar a.timestamp como UTC antes de converter
+            "timestamp": a.timestamp.replace(tzinfo=timezone.utc).astimezone(tz_sp)
+        })
+
     form = AttemptForm()
 
     if form.validate_on_submit():
@@ -375,7 +392,7 @@ def index():
             flash("Você atingiu o limite de 5 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
             return redirect(url_for("index"))
 
-        # Registrar a tentativa
+        # Registrar a tentativa (salva em UTC no campo 'timestamp' por padrão)
         new_attempt = Attempt(username=escape(username), attempt=escape(combination))
         db.session.add(new_attempt)
         db.session.commit()
@@ -395,8 +412,8 @@ def index():
         # Redireciona para a página inicial após o processamento do formulário
         return redirect(url_for("index"))
     
-    # Passa as tentativas para o template, bem como o número total
-    total_attempts = Attempt.query.count()  # Conta o total de tentativas feitas
+    # Passa as tentativas (agora ajustadas para SP) e o número total
+    total_attempts = Attempt.query.count()
 
     # Cálculo opcional de tempo restante para reset
     days = hours = minutes = 0
@@ -411,15 +428,13 @@ def index():
         "index.html",
         form=form,
         safe=safe,
-        attempts=attempts,
-        total_attempts=total_attempts,  # Passando o total de tentativas para o template
+        attempts=attempts,  # Passamos a lista já convertida
+        total_attempts=total_attempts,
         days=days,
         hours=hours,
         minutes=minutes,
         recaptcha_site_key=app.config.get("RECAPTCHA_PUBLIC_KEY"),
     )
-
-
 # =============================================================================
 # Rota Winner
 # =============================================================================
