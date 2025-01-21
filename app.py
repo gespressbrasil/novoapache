@@ -454,6 +454,10 @@ def reset_safe():
             flash("Cofre não encontrado.", "error")
             return redirect(url_for("index"))
 
+        # Limpa todas as tentativas do banco de dados
+        Attempt.query.delete()
+        db.session.commit()  # Confirma as alterações (exclusão das tentativas)
+
         # Gere uma nova combinação e outros detalhes do prêmio
         new_combination = generate_combination()
         new_prize = request.form.get("prize", "Um super prêmio incrível")  # Prêmio do formulário ou padrão
@@ -465,7 +469,7 @@ def reset_safe():
         # Confirmação de sucesso
         db.session.commit()  # Certifique-se de que o commit está sendo feito para salvar no banco
         app.logger.info(f"Cofre resetado com nova combinação: {new_combination}")  # Log de confirmação
-        flash("Cofre resetado com sucesso!", "success")
+        flash("Cofre resetado com sucesso e as tentativas foram apagadas!", "success")
     
     except Exception as e:
         db.session.rollback()  # Reverte alterações no banco se ocorrer um erro
