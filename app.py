@@ -153,11 +153,11 @@ storage_uri = "redis://localhost:6379/0"
 
 logging.basicConfig(level=logging.DEBUG)
 
-#limiter = Limiter(
-    #get_remote_address,
-    #app=app,
-    #storage_uri=storage_uri,  
-    #default_limits=["200 per day", "50 per hour"]
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    storage_uri=storage_uri,  
+    default_limits=["1000 per day", "1000 per hour"]
 )
 
 
@@ -292,7 +292,7 @@ class AttemptForm(FlaskForm):
 
 
 @app.route("/", methods=["GET", "POST"])
-#@limiter.limit("10/minute")
+@limiter.limit("1000/minute")
 def index():
     """
     Página principal com o formulário para tentar abrir o cofre.
