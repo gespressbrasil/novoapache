@@ -388,8 +388,8 @@ def index():
             Attempt.username == username,
             Attempt.timestamp >= time_2_hours_ago
         ).count()
-        if attempts_count >= 5:
-            flash("Você atingiu o limite de 5 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
+        if attempts_count >= 2:
+            flash("Você atingiu o limite de 2 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
             return redirect(url_for("index"))
 
         # Registrar a tentativa (salva em UTC no campo 'timestamp' por padrão)
