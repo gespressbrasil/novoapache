@@ -21,7 +21,6 @@ body {
 /* ==============================
    Preloader
 ============================== */
-/* PRELOADER - tela inteira */
 #preloader {
   position: fixed;
   top: 0; left: 0;
@@ -29,21 +28,17 @@ body {
   height: 100%;
   background: rgba(255, 255, 255, 0.95);
   display: flex;
-  flex-direction: column; /* <-- ADICIONADO */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
-
-/* Texto acima da barra */
 #preloaderText {
   font-size: 1rem;
   color: #000;
   margin-bottom: 1rem;
   text-align: center;
 }
-
-/* A trilha (fundo) da barra de progresso */
 #progressBar {
   width: 250px; 
   height: 5px;
@@ -52,8 +47,6 @@ body {
   overflow: hidden;
   position: relative;
 }
-
-/* A parte que enche (barra propriamente dita) */
 #progressFill {
   width: 0%;
   height: 100%;
@@ -61,17 +54,14 @@ body {
   transition: width 2s ease;
 }
 
-
 /* ==============================
-/*Texto titulo do ganhadores */
-/* ==============================*/
-
+   Título dos ganhadores
+============================== */
 #unique-title {
-    text-align: center;
-    font-size: 2rem;
-    color: #333;
-    position: relative;
-  
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  position: relative;
 }
 #unique-subtitulo {
   text-align: center;
@@ -79,6 +69,7 @@ body {
   color: #6d6d6d;
   position: relative;
 }
+
 /* ==============================
    Cabeçalho minimalista
 ============================== */
@@ -92,94 +83,81 @@ body {
   display: none; 
 }
 
-
-/* regras cofre*/
-
+/* ==============================
+   Regras Cofre (#premio-cofre)
+============================== */
 #premio-cofre {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza horizontalmente */
-  justify-content: center; /* Centraliza verticalmente */
-  margin-bottom: 2rem ; /* Centraliza a seção na página */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
   margin-left: 2rem;
-  padding: 10px;
   margin-right: 2rem;
+  padding: 10px;
 }
-
 .prize-header, .prize-content, .rules-container {
   width: 100%;
-  text-align: center; /* Centraliza o texto dentro de cada parte */
+  text-align: center;
 }
-/* Remove os pontinhos (bullets) da lista */
 .rules-container ul {
-  list-style: none; /* Remove os pontinhos (bullets) */
-  padding: 0; /* Remove o padding padrão */
-  margin: 0; /* Remove a margem padrão */
+  list-style: none; 
+  padding: 0; 
+  margin: 0;
 }
-
-/* Estilo para os itens da lista */
 .rules-container li {
   font-size: 1.1rem;
   line-height: 1.5;
   position: relative;
-  padding-left: 0; /* Remover o espaço extra */
+  padding-left: 0;
 }
-
-/* Se você quiser remover a seta (como já foi feito no código) */
 .rules-container li::before {
-  content: ''; /* Não insere nada antes do item da lista */
+  content: ''; 
 }
 
 /* CONTAINER CENTRALIZADOR DA LISTA DE TENTATIVAS */
 .attempts-list-container {
   display: flex;
-  justify-content: center;    /* Centraliza o conteúdo horizontalmente */
-  width: 100%;                /* Ocupa toda a largura disponível */
-  padding: 2rem 0;           /* Espaçamento no topo e embaixo */
-  /* Você pode ajustar o background se quiser, ex.: background-color: #f9f9fb; */
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
 }
 
 /* BLOCO DA LISTA DE TENTATIVAS EM SI */
 .attempts-list {
-  background-color: #fff;                 /* Cor de fundo branca */
-  border: 1px solid #eee;                /* Borda suave */
-  padding: 2rem;                         /* Espaçamento interno */
-  border-radius: 8px;                    /* Cantos arredondados */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra leve */
-  width: 80%;                            /* Ajuste de largura */
-  max-width: 800px;                      /* Limite de largura máxima */
-  margin: 0 auto;                        /* Caso queira centralizar */
+  background-color: #fff; 
+  border: 1px solid #eee;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
 }
-
-/* TÍTULO DA LISTA (TENTATIVAS RECENTES) */
 .attempts-list h2 {
-  font-size: 1.6rem;         /* Tamanho da fonte */
-  font-weight: 600;          /* Pode usar 700 se quiser mais destaque */
-  color: #333;               /* Cor do texto */
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
   margin-bottom: 1rem;
   text-align: center;
 }
-
-/* LISTA SEM BOLINHAS */
 .attempts-list ul {
-  list-style: none;          /* Remove as bolinhas */
-  padding-left: 0;           /* Remove possível padding padrão */
-  margin: 0;                 /* Remove margem default */
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
-
-/* ITENS DA LISTA */
 .attempts-list li {
   font-size: 1rem;
   line-height: 1.5;
-  padding: 0.5rem 0;          /* Espaçamento vertical em cada item */
-  border-bottom: 1px solid #eee;  /* Linha divisória suave */
-  color: #666;                /* Cor do texto */
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  color: #666;
 }
-
-/* REMOVE A BORDA DO ÚLTIMO ITEM */
 .attempts-list li:last-child {
   border-bottom: none;
 }
+
+
 /* ==============================
    QUICK LINKS (TOPO)
 ============================== */
@@ -187,7 +165,7 @@ body {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 2rem;
-  text-align: left; /* ou center, se preferir */
+  text-align: left;
 }
 .quick-links-container h2 {
   font-size: 1.6rem;
@@ -197,8 +175,8 @@ body {
 }
 .quick-links-buttons {
   display: flex;
-  flex-wrap: wrap;  /* permite quebrar linha no mobile */
-  gap: 1rem;        /* espaço entre botões */
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 .link-button {
   display: inline-flex;
@@ -232,6 +210,91 @@ body {
 }
 
 /* ==============================
+   MENU HAMBÚRGUER vs LINKS RÁPIDOS
+============================== */
+
+/* 1) Oculta o menu hambúrguer por padrão (mostra só no mobile) */
+.mobile-nav {
+  display: none;
+  background-color: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Botão (hambúrguer) */
+.hamburger-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* Ajuste para combinar com seu projeto */
+  cursor: pointer;
+}
+
+/* O UL do menu mobile começa fechado */
+.mobile-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none; /* fechado por padrão */
+}
+
+/* Quando aberto (classe .open), exibe */
+.mobile-menu.open {
+  display: block;
+}
+
+/* Estilo dos links no menu mobile, usando a “cara” do projeto */
+.mobile-menu li {
+  margin: 0.5rem 0;
+}
+.mobile-menu a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+  border-radius: 9999px;
+  padding: 0.2rem 0.8rem;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.mobile-menu a:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* 2) A seção de “links rápidos” (desktop) 
+   por padrão pode ficar “display: block;” no CSS geral.
+   Mas nós ajustamos via media queries:
+*/
+@media (max-width: 768px) {
+  /* No MOBILE: 
+     - Escondemos a quick-links-container 
+     - Mostramos a mobile-nav
+  */
+  .quick-links-container {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  /* No DESKTOP:
+     - Mostramos a quick-links-container
+     - Escondemos a mobile-nav
+  */
+  .quick-links-container {
+    display: block !important; 
+  }
+  .mobile-nav {
+    display: none !important;
+  }
+}
+/* ==============================
    Hero Section (Título Principal)
 ============================== */
 .hero-section {
@@ -251,7 +314,6 @@ body {
   color: #666;
   margin-bottom: 2rem;
 }
-
 @media (max-width: 768px) {
   .hero-section {
     margin: 1rem auto;
@@ -273,138 +335,144 @@ body {
   }
 }
 
-/* ==============================
-   Slideshow (banner-slideshow)
-   (Igual ao seu código antigo)
-============================== */
-/* Ajuste para o slideshow */
+/* CONTÊINER GERAL */
 .banner-slideshow {
   position: relative;
   width: 100%;
-  height: 50vh; /* Definindo a altura como 50% da altura da tela */
+  height: 50vh; /* ou outro valor fixo, se quiser forçar altura */
   overflow: hidden;
-  margin: 0; /* Remover qualquer margem indesejada */
-  padding: 0;
 }
 
-/* Ajusta a exibição de cada slide */
+/* CADA SLIDE */
 .slide {
   position: absolute;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
-  transition: left 1s ease;
-  background-size: cover;
+  /* Se quiser ver a imagem inteira, sem corte: */
+  background-size: contain;
   background-position: center;
-  display: none; /* Esconde todos os banners inicialmente */
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-/* Mobile - exibe o banner específico para dispositivos móveis */
-.mobile-banner {
-  display: none; /* Inicialmente escondido para desktop */
-  width: 100%;
-  height: 50vh; /* Definir altura responsiva para o banner móvel */
-  margin: 0;
-  position: relative;
-  background-size: cover;
-  background-position: center;
+/* SLIDE ATIVO */
+.slide.active {
+  opacity: 1;
 }
 
-/* Desktop - exibe o banner específico para desktop */
-.desktop-banner {
-  display: none; /* Inicialmente escondido para mobile */
-  width: 100%;
-  height: 50vh; /* Ajuste a altura conforme necessário para desktop */
-  background-size: cover;
-  background-position: center;
+/* ESCONDE TODOS OS SLIDES POR PADRÃO */
+.mobile-slide, .desktop-slide {
+  display: none; 
 }
 
+/* ESCONDE AMBAS AS CAIXAS DE DOTS POR PADRÃO */
+#mobileDots, #desktopDots {
+  display: none;
+}
+
+/* ==========================
+   MEDIA QUERY: MOBILE
+   (até 768px)
+========================== */
 @media (max-width: 768px) {
-  /* Para dispositivos móveis, esconda o banner desktop */
-  .desktop-banner {
-    display: none;
-  }
-
-  /* Exibe o banner móvel */
-  .mobile-banner {
+  /* Mostra slides mobile */
+  .mobile-slide {
     display: block;
-    width: 100%;
-    height: 50vh; /* Ajuste a altura para mobile (50% da altura da tela) */
-    margin: 0;
-    padding: 0;
-    background-size: cover;
-    background-position: center;
+  }
+  /* Mostra dots do mobile */
+  #mobileDots {
+    display: flex;
+  }
+
+  /* Esconde slides desktop */
+  .desktop-slide {
+    display: none !important;
+  }
+  /* Esconde dots desktop */
+  #desktopDots {
+    display: none !important;
   }
 }
 
+/* ==========================
+   MEDIA QUERY: DESKTOP
+   (a partir de 769px)
+========================== */
 @media (min-width: 769px) {
-  /* Para desktop, esconda o banner móvel */
-  .mobile-banner {
-    display: none;
+  /* Mostra slides desktop */
+  .desktop-slide {
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    height: 50vh;
+    display: block;
+  }
+  /* Mostra dots desktop */
+  #desktopDots {
+    display: flex;
   }
 
-/* Exibe o banner desktop */
-.desktop-banner {
-  display: block;
-  width: 70%; /* Largura do banner no desktop */
-  height: 50vh; /* Ajuste a altura para desktop (50% da altura da tela) */
-  background-size: cover;
-  background-position: center; /* Alinha a imagem no centro */
-  margin: 0 auto; /* Centraliza o banner horizontalmente */
-  position: relative;
-}
+  /* Esconde slides mobile */
+  .mobile-slide {
+    display: none !important;
+  }
+  /* Esconde dots mobile */
+  #mobileDots {
+    display: none !important;
+   
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  }
 }
 
-/* ==============================
-   Seção principal (container)
-============================== */
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+/* DOTS CONTAINER (posicionado no rodapé do banner) */
+.dots-container {
+  background-size: contain;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* BOLINHAS (DOTS) */
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: #fff;
 }
 
 /* ==============================
    Mensagens Flash
 ============================== */
 .flashes {
-  position: absolute; /* Ou fixed, dependendo de quando você quer que o elemento se mova com a página */
-  top: 0; /* Posiciona o elemento no topo da página */
-  left: 50%; /* Posiciona o elemento no meio da página */
-  transform: translateX(-50%); /* Ajusta o deslocamento para que o elemento fique perfeitamente centralizado */
+  position: absolute; 
+  top: 0; 
+  left: 50%; 
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  z-index: 9999; /* acima do resto do site */
+  z-index: 9999; 
 }
-
-/* Cada banner */
 .message-banner {
   padding: 12px 18px;
   border-radius: 8px;
   color: #fff;
-  animation: fadeIn 0.5s ease-in forwards,
-             fadeOut 0.5s ease-out 3.5s forwards; 
-  /* fadeIn 0.5s + aguarda 3s + fadeOut 0.5s (total ~4s) */
-  opacity: 0; /* para iniciar invisível e fadeIn */
-}
-
-/* Exemplo de cor para 'success' */
-.message-banner.success {
-  background-color: #4CAF50; /* verde */
-}
-
-/* Exemplo de cor para 'error' */
-.message-banner.error {
-  background-color: #666; /* vermelho */
-}
-
-/* Se tiver 'info' ou 'warning', pode criar mais classes */
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-@keyframes fadeOut {
-  to { opacity: 0; transform: translateY(-10px); }
+  animation: fadeIn 0.5s ease-in forwards, fadeOut 0.5s ease-out 3.5s forwards; 
+  opacity: 0;
 }
 .message-banner.success {
   background-color: #e0f8e0;
@@ -421,19 +489,28 @@ body {
   color: #0c5460;
   border-color: #bee5eb;
 }
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-10px); }
+}
 
 /* ==============================
    Instrução: "Escolha 6 números..."
 ============================== */
+
 .numbers-instruction {
   text-align: center;
-  margin: 2rem 0 1rem;
+  position: center;
+ margin-top: 20px;
 }
 .numbers-instruction h2 {
   font-size: 1.4rem;
   color: #333;
 }
 
+  
 /* ==============================
    Formulário (Cofre)
 ============================== */
@@ -565,9 +642,7 @@ body {
 }
 
 /* ==============================
-   Banners (3 cartões)
-   - Lado a lado no desktop (wrap),
-     rolagem horizontal no mobile
+   Banners (3 cartões) 
 ============================== */
 .banner-container {
   display: flex;
@@ -576,10 +651,10 @@ body {
   justify-content: center;
   max-width: 1200px;
   padding: 0 1rem;
-  flex-wrap: wrap;          /* no desktop, podem quebrar linha */
+  flex-wrap: wrap;
 }
 .banner-item {
-  flex: 0 0 calc(33.333% - 2rem); /* 3 por linha no desktop */
+  flex: 0 0 calc(33.333% - 2rem);
   background-color: #f2f2f2;
   padding: 1rem;
   border-radius: 8px;
@@ -612,38 +687,32 @@ body {
 }
 
 /* MOBILE: rolagem horizontal */
-
-
 @media (max-width: 768px) {
   .quick-links-buttons {
-    flex-wrap: nowrap;         /* não quebra linha */
-    overflow-x: auto;          /* rolagem horizontal */
-    -webkit-overflow-scrolling: touch; /* mais suave no iOS */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .link-button {
-    flex: 0 0 auto;            /* mantém largura “fixa” */
-    white-space: nowrap;       /* não quebra o texto */
-    font-size: 0.7rem;         /* diminui a fonte */
-    padding: 0.3rem 1rem;      /* diminui o padding */
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    padding: 0.3rem 1rem;
   }
-}
-@media (max-width: 768px) {
   .banner-container {
-    flex-wrap: nowrap;        /* não quebra linha no mobile */
-    overflow-x: auto;         /* rolagem horizontal */
-    -webkit-overflow-scrolling: touch; 
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .banner-item {
-    flex: 0 0 auto;           /* não encolhe/cresce */
-    width: 280px;             /* define largura fixa no mobile */
-    margin-right: 1rem;       /* espaçamento entre cards */
+    flex: 0 0 auto;
+    width: 280px;
+    margin-right: 1rem;
   }
-
   html, body {
     max-width: 100%;
     overflow-x: hidden;
   }
-  
 }
 
 /* ==============================
@@ -659,7 +728,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
 }
 .prize-header {
   text-align: center;
