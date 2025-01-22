@@ -26,20 +26,16 @@ from zoneinfo import ZoneInfo
 
 
 
-# =============================================================================
-# Carregar variáveis de ambiente (.env)
-# =============================================================================
 load_dotenv()
 
-# Verifique se as variáveis estão carregadas corretamente
+
 print("RECAPTCHA_PUBLIC_KEY:", os.getenv("RECAPTCHA_PUBLIC_KEY"))
 print("RECAPTCHA_PRIVATE_KEY:", os.getenv("RECAPTCHA_PRIVATE_KEY"))
-# =============================================================================
-# Configuração básica do Flask
-# =============================================================================
+
+
 app = Flask(__name__)
 
-Compress(app)  # Ativa a compressão Gzip
+Compress(app)  
 
 
 assets = Environment(app)
@@ -64,16 +60,12 @@ app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 
 
-# =============================================================================
-# Configuração do Google reCAPTCHA v3
-# =============================================================================
-# Verifique se as variáveis de ambiente foram carregadas corretamente
-# Configuração do Google reCAPTCHA v3
+
 RECAPTCHA_PUBLIC_KEY = "6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"
 RECAPTCHA_PRIVATE_KEY = "6Lc2-q8qAAAAAGd23DAf4NPZVfA8pKUAggasNp2K"
-RECAPTCHA_THRESHOLD = 0.5  # Você pode definir o valor que desejar
+RECAPTCHA_THRESHOLD = 0.5  
 
-# Carregar as chaves diretamente no Flask config
+
 app.config["RECAPTCHA_PUBLIC_KEY"] = RECAPTCHA_PUBLIC_KEY
 app.config["RECAPTCHA_PRIVATE_KEY"] = RECAPTCHA_PRIVATE_KEY
 app.config["RECAPTCHA_THRESHOLD"] = RECAPTCHA_THRESHOLD
@@ -82,31 +74,31 @@ app.config["RECAPTCHA_THRESHOLD"] = RECAPTCHA_THRESHOLD
 app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 app.logger.debug(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
-# Verificação das chaves do reCAPTCHA
+
+
 if not RECAPTCHA_PUBLIC_KEY or not RECAPTCHA_PRIVATE_KEY:
     app.logger.error("As chaves do reCAPTCHA não estão configuradas corretamente!")
 else:
     app.logger.info(f"Chave pública do reCAPTCHA: {RECAPTCHA_PUBLIC_KEY}")
     app.logger.info(f"Chave privada do reCAPTCHA: {RECAPTCHA_PRIVATE_KEY}")
 
-# Logando as variáveis para debug (em vez de print)
+
 app.logger.debug(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 app.logger.debug(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 
-# Verificar o valor do threshold
+
 app.logger.info(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
-# Para debug, caso queira imprimir no console (não recomendado em produção)
+
 print(f"RECAPTCHA_PUBLIC_KEY: {RECAPTCHA_PUBLIC_KEY}")
 print(f"RECAPTCHA_PRIVATE_KEY: {RECAPTCHA_PRIVATE_KEY}")
 print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
-# Definição da Política de Content Security Policy (CSP)
-# =============================================================================
+
 CSP_POLICY = {
-    # Fonte padrão para todos os recursos
+    
     "default-src": ["'self'"],
-    # Scripts: permite scripts do próprio domínio, Google, reCAPTCHA e permite inline (com cautela)
+    
     "script-src": [
         "'self'",
         "https://www.google.com",
@@ -114,46 +106,45 @@ CSP_POLICY = {
         "https://www.recaptcha.net",
         "'unsafe-inline'"  
     ],
-    # Estilos: permite estilos do próprio domínio e do Google Fonts, e CSS inline
+    
     "style-src": [
         "'self'",
         "'unsafe-inline'",  
         "https://fonts.googleapis.com"
     ],
-    # Fontes: permite fontes do próprio domínio e do Google Fonts
+    
     "font-src": [
         "'self'",
         "https://fonts.gstatic.com"
     ],
-    # Imagens: permite imagens do próprio domínio, imagens embutidas em data-uri e de fontes do Google
+    
     "img-src": [
-        "'self'",  # Permite imagens do próprio domínio
-        "data:",  # Permite imagens embutidas em base64
+        "'self'",  
+        "data:",  
         "https://www.google.com",
         "https://www.gstatic.com"
     ],
-    # Conexões: permite conexões AJAX e WebSocket ao próprio domínio e fontes do Google
+    
     "connect-src": [
         "'self'",
         "https://www.google.com",
         "https://www.gstatic.com"
     ],
-    # Frames: permite frames do próprio domínio, Google e reCAPTCHA
+    
     "frame-src": [
         "'self'",
         "https://www.google.com",
         "https://www.recaptcha.net"
     ],
-    # Bloquear objetos (plugins, por exemplo)
-    "object-src": ["'none'"],  # Nenhum objeto pode ser carregado
-    # Restringir URI base a somente o próprio domínio
+    
+    "object-src": ["'none'"],  
+    
     "base-uri": ["'self'"],
-    # Restringe a ações de formulários para o próprio domínio
+    
     "form-action": ["'self'"]
 }
-# =============================================================================
-# Inicializa o Talisman com a política de CSP definida
-# =============================================================================
+
+
 Talisman(app, content_security_policy=CSP_POLICY)
 
 
@@ -164,41 +155,32 @@ def check_user_agent():
         abort(403, description="User-Agent inválido")
 
 
-# =============================================================================
-# Inicializar banco de dados e migrações
-# =============================================================================
+
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# =============================================================================
-# Configurar Limiter
-# =============================================================================
-# Configuração do Redis para Flask Limiter
+
 storage_uri = "redis://localhost:6379/0"
 
-# Configurar um logger
+
 logging.basicConfig(level=logging.DEBUG)
 
 limiter = Limiter(
     get_remote_address,
     app=app,
-    storage_uri=storage_uri,  # Redis como backend de armazenamento
+    storage_uri=storage_uri,  
     default_limits=["200 per day", "50 per hour"]
 )
 
-# Verificar logs
+
 @app.before_request
 def log_redis_usage():
     app.logger.debug("Usando Redis como backend para Flask Limiter!")
 
-# =============================================================================
-# Variável global para rastrear se o cofre foi configurado
-# =============================================================================
+
 safe_initialized = False
 
-# =============================================================================
-# setup_safe() - Configura o cofre uma única vez
-# =============================================================================
+
 def setup_safe():
     """
     Configura o cofre com uma combinação inicial e prêmio,
@@ -229,9 +211,7 @@ def setup_safe():
     finally:
         safe_initialized = True
 
-# =============================================================================
-# Função que verifica o reCAPTCHA
-# =============================================================================
+
 def verify_recaptcha(token: str, action: str) -> bool:
     """
     Verifica o token do reCAPTCHA v3 usando a API do Google.
@@ -242,7 +222,7 @@ def verify_recaptcha(token: str, action: str) -> bool:
     secret_key = app.config["RECAPTCHA_PRIVATE_KEY"]
     if not secret_key:
         app.logger.warning("Chave secreta do reCAPTCHA não configurada; verificação ignorada.")
-        return False  # Alterado para False, pois a verificação não deve ser ignorada
+        return False  
 
     payload = {
         "secret": secret_key,
@@ -255,7 +235,7 @@ def verify_recaptcha(token: str, action: str) -> bool:
         result = response.json()
         app.logger.info(f"Resposta do reCAPTCHA: {result}")
 
-        # Verifica a resposta do reCAPTCHA
+        
         if result.get("success") and result.get("action") == action and result.get("score", 0) >= RECAPTCHA_THRESHOLD:
             app.logger.info("Verificação reCAPTCHA bem-sucedida.")
             return True
@@ -265,9 +245,8 @@ def verify_recaptcha(token: str, action: str) -> bool:
     except requests.exceptions.RequestException as e:
         app.logger.error(f"Erro de requisição ao verificar o reCAPTCHA: {e}")
         return False
-# =============================================================================
-# Validações
-# =============================================================================
+
+
 def validate_username(username: str) -> bool:
     """
     Valida o formato do nome de usuário usando regex:
@@ -287,9 +266,8 @@ def validate_combination(combination: str) -> bool:
     return bool(re.match(pattern, combination.replace(" ", "")))
 
 
-# =============================================================================
-# Decoradores de segurança
-# =============================================================================
+
+
 def admin_required(func):
     """
     Decorador simples para rotas que exigem 'autenticação' de administrador.
@@ -304,9 +282,8 @@ def admin_required(func):
     wrapper.__name__ = func.__name__
     return wrapper
 
-# =============================================================================
-# Formulário de Tentativa
-# =============================================================================
+
+
 class AttemptForm(FlaskForm):
     username = StringField(
         "Seu @ do Instagram",
@@ -324,16 +301,15 @@ class AttemptForm(FlaskForm):
     submit = SubmitField("Tentar Abrir o Cofre")
 
 
-# =============================================================================
-# Rota Principal: index
-# =============================================================================
+
+
 @app.route("/", methods=["GET", "POST"])
 @limiter.limit("10/minute")
 def index():
     """
     Página principal com o formulário para tentar abrir o cofre.
     """
-    from zoneinfo import ZoneInfo  # Certifique-se de ter esta importação (Python 3.9+)
+    from zoneinfo import ZoneInfo  
 
     safe = Safe.query.first()
 
@@ -341,15 +317,15 @@ def index():
         flash("O cofre ainda não foi configurado.", "error")
         return render_template("index.html", safe=None, attempts=[], form=None)
 
-    # Impede que tentativas sejam feitas enquanto o cofre estiver "resetando"
+    
     if safe.winner:
         flash("O cofre já foi aberto! Parabéns ao vencedor!", "success")
         return redirect(url_for("winner"))
 
-    # 1) Busca as tentativas salvas em UTC (sem tzinfo)
+    
     attempts_utc = Attempt.query.order_by(Attempt.timestamp.desc()).limit(10).all()
     
-    # 2) Converte cada tentativa explicitamente para fuso de São Paulo
+    
     tz_sp = ZoneInfo("America/Sao_Paulo")
     attempts = []
     for a in attempts_utc:
@@ -357,7 +333,6 @@ def index():
             "id": a.id,
             "username": a.username,
             "attempt": a.attempt,
-            # Forçando a tratar a.timestamp como UTC antes de converter
             "timestamp": a.timestamp.replace(tzinfo=timezone.utc).astimezone(tz_sp)
         })
 
@@ -365,15 +340,15 @@ def index():
 
     if form.validate_on_submit():
         username = form.username.data.strip()
-        combination = form.numbers.data.strip()  # Pega a combinação de números enviada pelo formulário
+        combination = form.numbers.data.strip()  
         recaptcha_token = request.form.get("g-recaptcha-response", "")
 
-        # Verifica reCAPTCHA v3
+       
         if not verify_recaptcha(recaptcha_token, "login"):
             flash("Verificação reCAPTCHA falhou. Tente novamente.", "error")
             return redirect(url_for("index"))
 
-        # Valida username e combination
+        
         if not validate_username(username):
             flash("Nome de usuário inválido! Exemplo válido: @usuario123", "error")
             return redirect(url_for("index"))
@@ -382,7 +357,7 @@ def index():
             flash("Combinação inválida! Ex.: '1,2,30,45,59,60'", "error")
             return redirect(url_for("index"))
 
-        # Verifica tentativas do mesmo usuário a cada 2 horas
+        
         time_2_hours_ago = datetime.now(timezone.utc) - timedelta(hours=2)
         attempts_count = Attempt.query.filter(
             Attempt.username == username,
@@ -392,12 +367,12 @@ def index():
             flash("Você atingiu o limite de 2 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
             return redirect(url_for("index"))
 
-        # Registrar a tentativa (salva em UTC no campo 'timestamp' por padrão)
+        
         new_attempt = Attempt(username=escape(username), attempt=escape(combination))
         db.session.add(new_attempt)
         db.session.commit()
 
-        # Comparação de combinações desconsiderando a ordem
+       
         user_combination = sorted([int(num) for num in combination.split(',')])
         safe_combination = sorted([int(num) for num in safe.combination.split('-')])
 
@@ -409,13 +384,13 @@ def index():
         else:
             flash("Combinação incorreta. Tente novamente.", "error")
 
-        # Redireciona para a página inicial após o processamento do formulário
+        
         return redirect(url_for("index"))
     
-    # Passa as tentativas (agora ajustadas para SP) e o número total
+    
     total_attempts = Attempt.query.count()
 
-    # Cálculo opcional de tempo restante para reset
+    
     days = hours = minutes = 0
     if safe and safe.reset_time:
         delta = safe.reset_time.replace(tzinfo=timezone.utc) - datetime.now(timezone.utc)
@@ -428,16 +403,15 @@ def index():
         "index.html",
         form=form,
         safe=safe,
-        attempts=attempts,  # Passamos a lista já convertida
+        attempts=attempts,  
         total_attempts=total_attempts,
         days=days,
         hours=hours,
         minutes=minutes,
         recaptcha_site_key=app.config.get("RECAPTCHA_PUBLIC_KEY"),
     )
-# =============================================================================
-# Rota Winner
-# =============================================================================
+
+
 @app.route("/winner", methods=["GET"])
 def winner():
     """
@@ -448,54 +422,51 @@ def winner():
         abort(404, description="Nenhum vencedor encontrado.")
     return render_template("winner.html", username=safe.winner, safe=safe)
 
-# =============================================================================
-# Rota Reset
-# =============================================================================
+
 @app.route("/reset", methods=["POST"])
 def reset_safe():
     """
     Reseta o cofre com uma nova combinação e prêmio.
     Rota protegida com token via POST.
     """
-    # Verifica o token de segurança
+    
     token = request.form.get("token")
     if token != os.getenv("RESET_TOKEN"):
         abort(403, description="Token inválido para resetar o cofre.")
 
     try:
-        # Busca o cofre ativo
-        safe = Safe.query.first()  # O cofre atual, caso exista
+        
+        safe = Safe.query.first()  
         if not safe:
             flash("Cofre não encontrado.", "error")
             return redirect(url_for("index"))
 
-        # Limpa todas as tentativas do banco de dados
+        
         Attempt.query.delete()
-        db.session.commit()  # Confirma as alterações (exclusão das tentativas)
-
-        # Gere uma nova combinação e outros detalhes do prêmio
+        db.session.commit()  
+        
+        
         new_combination = generate_combination()
-        new_prize = request.form.get("prize", "Um super prêmio incrível")  # Prêmio do formulário ou padrão
-        new_donor = request.form.get("donor", "Um doador generoso")  # Doador do formulário ou padrão
-
-        # Resetando o cofre
+        new_prize = request.form.get("prize", "Um super prêmio incrível")  
+        new_donor = request.form.get("donor", "Um doador generoso")  
+        
+        
         safe.reset(new_combination=new_combination, new_prize=new_prize, new_donor=new_donor)
 
-        # Confirmação de sucesso
-        db.session.commit()  # Certifique-se de que o commit está sendo feito para salvar no banco
-        app.logger.info(f"Cofre resetado com nova combinação: {new_combination}")  # Log de confirmação
+        
+        db.session.commit()  
+        app.logger.info(f"Cofre resetado com nova combinação: {new_combination}")  
         flash("Cofre resetado com sucesso e as tentativas foram apagadas!", "success")
     
     except Exception as e:
-        db.session.rollback()  # Reverte alterações no banco se ocorrer um erro
+        db.session.rollback()  
         app.logger.error(f"Erro ao resetar o cofre: {str(e)}")
         flash(f"Erro ao resetar o cofre: {str(e)}", "error")
 
-    # Redireciona de volta para a página principal
+    
     return redirect(url_for("index"))
-# =============================================================================
-# Rota Exportar Auditoria
-# =============================================================================
+
+
 @app.route("/exportar_auditoria", methods=["GET"])
 @admin_required
 def exportar_auditoria():
@@ -504,7 +475,7 @@ def exportar_auditoria():
     Agora protegida com 'admin_required'.
     Ajuste para um sistema de login real em produção.
     """
-    # Verifica se a aplicação está rodando em ambiente de desenvolvimento
+    
     if os.environ.get("FLASK_ENV") != "development":
         abort(403, description="Rota somente permitida em desenvolvimento.")
 
@@ -531,9 +502,8 @@ def exportar_auditoria():
         download_name="tentativas.csv",
     )
 
-# =============================================================================
-# Tratamento de Erros
-# =============================================================================
+
+
 @app.errorhandler(HTTPException)
 def handle_exception(e):
     """
@@ -542,16 +512,14 @@ def handle_exception(e):
     flash(Markup(f"Ocorreu um erro: {e.name} - {e.description}"), "error")
     return redirect(url_for("index"))
 
-# =============================================================================
-# Execução da Aplicação
-# =============================================================================
+
 def run_app():
     """
     Inicializa a aplicação e chama setup_safe() apenas uma vez.
     Removeu-se db.create_all() para usar Flask-Migrate.
     """
     with app.app_context():
-        # Aqui removemos db.create_all(), pois estamos usando Flask-Migrate
+       
         setup_safe()
     app.run(debug=True, host="0.0.0.0", port=5001)
 
