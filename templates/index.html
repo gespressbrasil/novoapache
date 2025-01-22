@@ -116,21 +116,24 @@
   <!-- SLIDES PARA MOBILE (2) -->
   <div class="slide mobile-slide" id="mobileSlide1"></div>
   <div class="slide mobile-slide" id="mobileSlide2"></div>
-
+  <div class="slide mobile-slide" id="mobileSlide3"></div>
   <!-- SLIDES PARA DESKTOP (2) -->
   <div class="slide desktop-slide" id="desktopSlide1"></div>
   <div class="slide desktop-slide" id="desktopSlide2"></div>
+  <div class="slide desktop-slide" id="desktopSlide3"></div>
 
   <!-- Bolinhas (dots) para MOBILE -->
   <div class="dots-container mobile-only" id="mobileDots">
     <span class="dot mobile-dot active" data-slide="0"></span>
     <span class="dot mobile-dot" data-slide="1"></span>
+    <span class="dot mobile-dot" data-slide="2"></span>
   </div>
 
   <!-- Bolinhas (dots) para DESKTOP -->
   <div class="dots-container desktop-only" id="desktopDots">
     <span class="dot desktop-dot active" data-slide="0"></span>
     <span class="dot desktop-dot" data-slide="1"></span>
+    <span class="dot desktop-dot" data-slide="2"></span>
   </div>
 </div>
 
@@ -231,7 +234,7 @@
       </section>
 
     <div class="banner-header">
-      <h2 id="unique-title">Últimos Ganhadores</h2>
+      <h2 id="unique-title">Últimos Ganhadores e Patrocinadores </h2>
       <p id="unique-subtitulo">Seja você o próximo.</p>
   </div>
   
@@ -240,15 +243,17 @@
  <div class="banner-container">
   <div class="banner-item">
       <img src="/static/imagens/avatar1.jpg" alt="avatar1">
-      <h2>Primeiro Ganhador</h2>
-      <p>2 Mil Reais</p>
+      <h2>Ganhador</h2>
+      <h2>Carregando...</h2>
+      <p>R$500 Reais</p>
       <a href="#">Veja mais</a>
   </div>
   <div class="banner-item">
-      <img src="/static/imagens/avatar2.jpg" alt="avatar2">
-      <h2>Segundo Ganhador </h2>
-      <p>Carregando...</p>
-      <a href="#">Veja mais</a>
+      <img src="/static/imagens/avatar2.jpeg" alt="avatar2">
+      <h2>Patrocinador</h2>
+      <h2>@mullerfp </h2>
+      <p>R$500 Reais</p>
+      <a href="https://www.instagram.com/mullerfp?igsh=MWxqNDFwb2RyOHVsMw%3D%3D&utm_source=qr">Veja mais</a>
   </div>
   <div class="banner-item">
       <img src="/static/imagens/avatar3.jpg" alt="avatar3">
@@ -260,64 +265,74 @@
   
   
 
-    <!-- Seção do Prêmio e Regras (adicione um ID para ancorar com "Prêmio do Cofre") -->
-    <section class="prize-info improved-box" id="premio-cofre">
-      <div class="prize-header">
-        <h2 class="prize-title">Prêmio do Cofre</h2>
-        <p class="prize-subtitle">Um prêmio exclusivo esperando por você.</p>
-      </div>
-      <div class="prize-content">
-        <p>
-          Este cofre contém: <strong>{{ safe.prize }}</strong>, oferecido pelo patrocinador.
-        </p>
-        <p>
-          Para participar, siga o perfil do patrocinador: 
-          <a href="https://www.instagram.com/patrocinador_oficial" target="_blank">@patrocinador_oficial</a> 
-          e interaja no 
-          <a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post Oficial</a>.
-        </p>
-      </div>
-      <div class="rules-container">
-        <h3>Regras para Ganhar</h3>
-        <ul>
-          <li>↗ Seguir <strong>@patrocinador_oficial</strong> no Instagram antes de abrir o cofre.</li>
-          <li>↗ Curtir e comentar no Post Oficial <strong>antes</strong> de abrir o cofre.</li>
-          <li>↗ O vencedor será validado pela ordem das ações (seguir, curtir, comentar e compartilhar.).</li>
-          <li>↗ Caso não tenha cumprido todas as regras <em>antes</em> de abrir o cofre, perde o direito ao prêmio.</li>
-        </ul>
-      </div>
-    </section>
-  </main>
+<!-- Seção do Prêmio e Regras (âncora: "Prêmio do Cofre") -->
+<section class="prize-info improved-box" id="premio-cofre">
+  <!-- Cabeçalho do Prêmio -->
+  <header class="prize-header">
+    <h2 class="prize-title">Prêmio do Cofre</h2>
+    <p class="prize-subtitle">Um prêmio exclusivo esperando por você.</p>
+  </header>
+
+  <!-- Conteúdo do Prêmio -->
+  <div class="prize-content">
+    <p>Este cofre contém: <strong>{{ safe.prize }}</strong></p>
+    <p>Para participar, siga o perfil do patrocinador: <a href="https://www.instagram.com/patrocinador_oficial" target="_blank">@patrocinador_oficial</a>
+      e interaja no <a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post Oficial</a>.</p>
+  </div>
+
+  <!-- Regras para Ganhar -->
+  <div class="rules-container">
+    <h3>Regras para Ganhar</h3>
+    <ul>
+      <li>↗ Seguir @patrocinador_oficial no Instagram antes de abrir o cofre.</li>
+      <li>↗ Curtir, comentar e compartilhar o Post Oficial antes de abrir o cofre.</li>
+      <li>↗ O vencedor será validado pela ordem das ações antes de abrir o cofre(seguir, curtir, comentar e compartilhar).</li>
+      <li>↗ Para conferência sera verificado a data e hora de abertura do cofre.</li>
+      <li>↗ Caso não cumpra todas as regras antes de abrir o cofre, perderá o direito ao prêmio.</li>
+    </ul>
+  </div>
+</section>
 
   <!-- Rodapé -->
-  <footer class="apple-footer">
-    <div class="footer-info">
-      <h3>Como funciona o Cofre da Sorte </h3>
-      <p>
-        O Cofre da Sorte é um sistema de premiação online que permite que qualquer pessoa participe 
-        usando apenas seu @ do Instagram. Não coletamos dados sensíveis, apenas o necessário 
-        para validar suas tentativas e identificar o(a) vencedor(a).
-      </p>
-      <p>
-        A cada reset, uma nova combinação é gerada. Se você acertar, ganha o prêmio. 
-        Mas lembre-se de seguir todas as regras de participação para não perder sua chance!
-      </p>
-      <p style="font-size: 0.9rem; color: #666;">
-        Nós da equipe Cofre da Sorte nos resguardamos quanto a eventuais erros ou 
-        instabilidades no site que possam impedir as tentativas momentaneamente. 
-        Em caso de dúvidas, entre em contato conosco.
-      </p>
-    </div>
-    <p style="font-size: 0.9rem; color: #666; margin-top:1rem;">
-      Cofre da Sorte - Direitos Reservados 2024
+<footer class="apple-footer">
+  <div class="footer-info">
+    <h3>Como Funciona o Cofre da Sorte e Termos de Uso</h3>
+    <p>
+      O <strong>Cofre da Sorte</strong> é um sistema de premiação online que possibilita a participação de qualquer pessoa utilizando apenas seu @ do Instagram. Para participar, o usuário escolhe 6 números e, a cada reset, uma nova combinação é gerada. Caso a combinação escolhida seja a correta, o prêmio é automaticamente transferido para o vencedor.
     </p>
-  
-    <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">
-      Este site utiliza SSL/TLS e reCAPTCHA para proteger seus dados fique tranquilo.
+    <p>
+      Ao tentar abrir o cofre, o participante <strong>aceita automaticamente</strong> estes Termos de Uso e Condições de Participação, que incluem, mas não se limitam, às seguintes regras:
     </p>
-  </footer>
+    <ul style="margin-left: 1rem; line-height: 1.6;">
+      <li>
+        <strong>Validação das Regras:</strong> Se o participante tentar abrir o cofre sem cumprir todas as regras – como seguir o perfil oficial com um perfil oficial do participante, curtir, comentar e compartilhar no post da promoção – a tentativa será invalidada. Nesse caso, o cofre será automaticamente resetado, gerando uma nova combinação, e o prêmio retornará ao saldo do cofre.
+      </li>
+      <li>
+        <strong>Uso de Bots ou Artifícios Indevidos:</strong> Caso seja identificada a utilização de bots, scripts automatizados ou quaisquer outros artifícios que visem fraudar a participação, a tentativa será desclassificada e o prêmio permanecerá no cofre. Nossa tecnologia de segurança e monitoramento detecta e coibirá essas práticas para garantir a integridade da promoção.
+      </li>
+      <li>
+        <strong>Coleta de Dados:</strong> Não coletamos dados pessoais sensíveis. São registrados apenas os dados mínimos necessários para validar a participação e identificar o(a) vencedor(a).
+      </li>
+      <li>
+        <strong>Responsabilidade:</strong> Em caso de falhas técnicas, erros ou instabilidades momentâneas no site, a equipe do Cofre da Sorte se reserva o direito de tomar as medidas necessárias para manter a integridade da promoção. Quaisquer dúvidas ou inconsistências serão avaliadas e comunicadas aos participantes.
+      </li>
+    </ul>
+    <p>
+      É de responsabilidade do participante a leitura atenta destes Termos de Uso antes de tentar abrir o cofre. Ao participar, você concorda integralmente com todas as condições estipuladas, comprometendo-se a agir de acordo com as regras aqui estabelecidas.
+    </p>
+    <p style="font-size: 0.9rem; color: #666;">
+      Em caso de dúvidas ou para mais informações, entre em contato conosco.
+    </p>
+  </div>
+  <p style="font-size: 0.9rem; color: #666; margin-top:1rem;">
+    Cofre da Sorte - Direitos Reservados 2024
+  </p>
+  <p style="margin-top: 1rem; font-size: 0.8rem; color: #666;">
+    Este site utiliza SSL/TLS e reCAPTCHA para proteger os dados dos usuários e garantir uma navegação segura.
+  </p>
+</footer>
 
-      <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYMW6C1RB0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -326,6 +341,7 @@
 
   gtag('config', 'G-PYMW6C1RB0');
 </script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
         const preloader = document.getElementById('preloader');
@@ -462,22 +478,24 @@
       // ========== MOBILE ==========
       const slideM1 = document.getElementById('mobileSlide1');
       const slideM2 = document.getElementById('mobileSlide2');
+      const slideM3 = document.getElementById('mobileSlide3');
       // Defina as imagens para cada slide mobile
       slideM1.style.backgroundImage = "url('/static/imagens/mobile-banner1.png')";
       slideM2.style.backgroundImage = "url('/static/imagens/mobile-banner2.png')";
-  
-      slides = [slideM1, slideM2];
+      slideM3.style.backgroundImage = "url('/static/imagens/mobile-banner3.png')";
+      slides = [slideM1, slideM2,slideM3,];
       dots = document.querySelectorAll('.mobile-dot');
   
     } else {
       // ========== DESKTOP ==========
       const slideD1 = document.getElementById('desktopSlide1');
       const slideD2 = document.getElementById('desktopSlide2');
+      const slideD3 = document.getElementById('desktopSlide3');
       // Defina as imagens para cada slide desktop
       slideD1.style.backgroundImage = "url('/static/imagens/desktop-banner1.png')";
       slideD2.style.backgroundImage = "url('/static/imagens/desktop-banner2.png')";
-  
-      slides = [slideD1, slideD2];
+      slideD3.style.backgroundImage = "url('/static/imagens/desktop-banner3.png')";
+      slides = [slideD1, slideD2,slideD3,];
       dots = document.querySelectorAll('.desktop-dot');
     }
   
