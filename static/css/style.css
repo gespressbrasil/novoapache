@@ -1,26 +1,18 @@
-/* 
-   Fonts (exemplo Apple-like):
-   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, 
-                Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-*/
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ==============================
-   Corpo geral
-============================== */
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   color: #333;
   background-color: #fff;
 }
 
-/* ==============================
-   Preloader
-============================== */
+
 #preloader {
   position: fixed;
   top: 0; left: 0;
@@ -54,9 +46,7 @@ body {
   transition: width 2s ease;
 }
 
-/* ==============================
-   Título dos ganhadores
-============================== */
+
 #unique-title {
   text-align: center;
   font-size: 2rem;
@@ -70,9 +60,7 @@ body {
   position: relative;
 }
 
-/* ==============================
-   Cabeçalho minimalista
-============================== */
+
 .apple-header {
   background-color: #fefefe;
   border-bottom: 5px solid #ddd;
@@ -83,22 +71,19 @@ body {
   display: none; 
 }
 
-/* ==============================
-   Regras Cofre (#premio-cofre)
-============================== */
-/* Container geral do painel de prêmio */
+
 .prize-info {
   background-color: #fff;
-  border: 1px solid #f0f0f0; /* Borda sutil */
+  border: 1px solid #f0f0f0; 
   border-radius: 8px;
   padding: 2rem;
   max-width: 800px;
   margin: 2rem auto;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Sombra discreta para destaque */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   font-family: 'Roboto', sans-serif;
 }
 
-/* Cabeçalho do painel de prêmio */
+
 .prize-header {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -117,7 +102,7 @@ body {
   margin: 0;
 }
 
-/* Conteúdo do prêmio */
+
 .prize-content {
   font-size: 1rem;
   line-height: 1.6;
@@ -137,7 +122,7 @@ body {
   text-decoration: underline;
 }
 
-/* Regras para ganhar */
+
 .rules-container {
   background-color: #f9f9f9;
   border: 1px solid #f0f0f0;
@@ -175,7 +160,6 @@ body {
   border-bottom: none;
 }
 
-/* Ícone visual opcional para as regras */
 .rules-container li::before {
   margin-right: 0.5rem;
   color: #0071e3;
@@ -184,7 +168,6 @@ body {
 
 
 
-/* CONTAINER CENTRALIZADOR DA LISTA DE TENTATIVAS */
 .attempts-list-container {
   display: flex;
   justify-content: center;
@@ -192,20 +175,19 @@ body {
   padding: 1.5rem 0;
 }
 
-/* BLOCO DA LISTA DE TENTATIVAS EM SI */
 .attempts-list {
   background-color: #fff;
-  border: 1px solid #f0f0f0; /* Borda bem sutil */
+  border: 1px solid #f0f0f0; 
   padding: 1.5rem;
   border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Sombra leve para definir o bloco */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); 
   width: 90%;
   max-width: 800px;
   margin: 0 auto;
   font-family: 'Roboto', sans-serif;
 }
 
-/* TÍTULO DA LISTA */
+
 .attempts-list h2 {
   font-size: 1.5rem;
   font-weight: 500;
@@ -216,14 +198,14 @@ body {
   padding-bottom: 0.5rem;
 }
 
-/* LISTA SEM BOLINHAS */
+
 .attempts-list ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* ITENS DA LISTA */
+
 .attempts-list li {
   font-size: 0.98rem;
   line-height: 1.5;
@@ -232,13 +214,12 @@ body {
   color: #555;
 }
 
-/* REMOVE A BORDA DO ÚLTIMO ITEM */
+
 .attempts-list li:last-child {
   border-bottom: none;
 }
-/* ==============================
-   QUICK LINKS (TOPO)
-============================== */
+
+
 .quick-links-container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -287,11 +268,7 @@ body {
   }
 }
 
-/* ==============================
-   MENU HAMBÚRGUER vs LINKS RÁPIDOS
-============================== */
 
-/* 1) Oculta o menu hambúrguer por padrão (mostra só no mobile) */
 .mobile-nav {
   display: none;
   background-color: #fff;
@@ -299,28 +276,27 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-/* Botão (hambúrguer) */
+
 .hamburger-button {
   background: none;
   border: none;
-  font-size: 1.5rem; /* Ajuste para combinar com seu projeto */
+  font-size: 1.5rem; 
   cursor: pointer;
 }
 
-/* O UL do menu mobile começa fechado */
 .mobile-menu {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: none; /* fechado por padrão */
+  display: none; 
 }
 
-/* Quando aberto (classe .open), exibe */
+
 .mobile-menu.open {
   display: block;
 }
 
-/* Estilo dos links no menu mobile, usando a “cara” do projeto */
+
 .mobile-menu li {
   margin: 0.5rem 0;
 }
@@ -343,15 +319,9 @@ body {
   border-color: #000;
 }
 
-/* 2) A seção de “links rápidos” (desktop) 
-   por padrão pode ficar “display: block;” no CSS geral.
-   Mas nós ajustamos via media queries:
-*/
+
 @media (max-width: 768px) {
-  /* No MOBILE: 
-     - Escondemos a quick-links-container 
-     - Mostramos a mobile-nav
-  */
+  
   .quick-links-container {
     display: none !important;
   }
@@ -361,10 +331,7 @@ body {
 }
 
 @media (min-width: 769px) {
-  /* No DESKTOP:
-     - Mostramos a quick-links-container
-     - Escondemos a mobile-nav
-  */
+ 
   .quick-links-container {
     display: block !important; 
   }
@@ -372,9 +339,8 @@ body {
     display: none !important;
   }
 }
-/* ==============================
-   Hero Section (Título Principal)
-============================== */
+
+
 .hero-section {
   max-width: 1200px;
   margin: 2rem auto;
@@ -413,21 +379,21 @@ body {
   }
 }
 
-/* CONTÊINER GERAL */
+
 .banner-slideshow {
   position: relative;
   width: 100%;
-  height: 50vh; /* ou outro valor fixo, se quiser forçar altura */
+  height: 50vh; 
   overflow: hidden;
 }
 
-/* CADA SLIDE */
+
 .slide {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
-  /* Se quiser ver a imagem inteira, sem corte: */
+  
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -435,51 +401,44 @@ body {
   transition: opacity 0.5s ease;
 }
 
-/* SLIDE ATIVO */
+
 .slide.active {
   opacity: 1;
 }
 
-/* ESCONDE TODOS OS SLIDES POR PADRÃO */
+
 .mobile-slide, .desktop-slide {
   display: none; 
 }
 
-/* ESCONDE AMBAS AS CAIXAS DE DOTS POR PADRÃO */
 #mobileDots, #desktopDots {
   display: none;
 }
 
-/* ==========================
-   MEDIA QUERY: MOBILE
-   (até 768px)
-========================== */
+
 @media (max-width: 768px) {
-  /* Mostra slides mobile */
-  .mobile-slide {
+
+   .mobile-slide {
     display: block;
   }
-  /* Mostra dots do mobile */
+   
   #mobileDots {
     display: flex;
   }
 
-  /* Esconde slides desktop */
+  
   .desktop-slide {
     display: none !important;
   }
-  /* Esconde dots desktop */
-  #desktopDots {
+
+   #desktopDots {
     display: none !important;
   }
 }
 
-/* ==========================
-   MEDIA QUERY: DESKTOP
-   (a partir de 769px)
-========================== */
+
 @media (min-width: 769px) {
-  /* Mostra slides desktop */
+  
   .desktop-slide {
     width: 100%;
     background-size: contain;
@@ -487,16 +446,16 @@ body {
     height: 50vh;
     display: block;
   }
-  /* Mostra dots desktop */
+  
   #desktopDots {
     display: flex;
   }
 
-  /* Esconde slides mobile */
+  
   .mobile-slide {
     display: none !important;
   }
-  /* Esconde dots mobile */
+  
   #mobileDots {
     display: none !important;
    
@@ -507,7 +466,7 @@ body {
   }
 }
 
-/* DOTS CONTAINER (posicionado no rodapé do banner) */
+
 .dots-container {
   background-size: contain;
   position: absolute;
@@ -517,7 +476,7 @@ body {
   gap: 0.5rem;
 }
 
-/* BOLINHAS (DOTS) */
+
 .dot {
   display: inline-block;
   width: 12px;
@@ -532,9 +491,7 @@ body {
   background-color: #fff;
 }
 
-/* ==============================
-   Mensagens Flash
-============================== */
+
 .flashes {
   position: absolute; 
   top: 0; 
@@ -574,9 +531,7 @@ body {
   to { opacity: 0; transform: translateY(-10px); }
 }
 
-/* ==============================
-   Instrução: "Escolha 6 números..."
-============================== */
+
 
 .numbers-instruction {
   text-align: center;
@@ -589,9 +544,7 @@ body {
 }
 
   
-/* ==============================
-   Formulário (Cofre)
-============================== */
+
 .form-container-section {
   margin-bottom:2rem;
 }
@@ -637,9 +590,7 @@ body {
   background-color: #444;
 }
 
-/* ==============================
-   Dígitos e Grade de Números
-============================== */
+
 .digit-display {
   display: flex;
   justify-content: center;
@@ -686,18 +637,14 @@ body {
   border-color: #000;
 }
 
-/* ==============================
-   Relógio
-============================== */
+
 .clock-container {
   text-align: center;
   font-size: 1.1rem;
   margin-bottom: 2rem;
 }
 
-/* ==============================
-   Lista de Tentativas
-============================== */
+
 .attempts-list {
   margin-bottom: 3rem;
 }
@@ -719,9 +666,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* ==============================
-   Banners (3 cartões) 
-============================== */
+
 .banner-container {
   display: flex;
   gap: 1rem;
@@ -764,7 +709,7 @@ body {
   transform: translateY(-10px);
 }
 
-/* MOBILE: rolagem horizontal */
+
 @media (max-width: 768px) {
   .quick-links-buttons {
     flex-wrap: nowrap;
@@ -793,9 +738,7 @@ body {
   }
 }
 
-/* ==============================
-   Caixa de Prêmio e Regras
-============================== */
+
 .prize-info.improved-box {
   background-color: #fff;
   border: 1px solid #eee;
@@ -840,9 +783,7 @@ body {
   line-height: 1.5;
 }
 
-/* ==============================
-   Rodapé
-============================== */
+
 .apple-footer {
   background-color: #f9f9fb;
   border-top: 1px solid #eee;
