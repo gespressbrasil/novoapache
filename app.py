@@ -134,15 +134,8 @@ CSP_POLICY = {
     "form-action": ["'self'"]
 }
 
-Talisman(
-    app,
-    content_security_policy=CSP_POLICY,
-    force_https=False,                # Desativado, pois o Apache já redireciona
-    strict_transport_security=False,  # Desativado, pois Apache já define HSTS
-    x_frame_options=None,             # Desativado, pois Apache já nega frames
-    x_content_type_options=False,     # Desativado, pois Apache já define nosniff
-    referrer_policy=None              # Desativado, pois Apache já define same-origin
-)
+Talisman(app, content_security_policy=CSP_POLICY)
+
 @app.before_request
 def check_user_agent():
     user_agent = request.headers.get('User-Agent', '')
