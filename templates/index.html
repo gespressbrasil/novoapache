@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cofre da Sorte</title>
   
-  <!-- Favicon -->
+ 
   <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='imagens/favicon.png') }}">
   
-  <!-- Fonte (Apple-like) -->
+  
  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
+  
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   
-  <!-- reCAPTCHA v3 -->
+  
   <script src="https://www.google.com/recaptcha/api.js?render=6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv"></script>
 </head>
 <body onload="updateClock('{{ safe.reset_time.isoformat() }}')">
@@ -26,24 +26,20 @@
     </div>
  </div>
   
-    <!-- A trilha (fundo) e a barra -->
+    
     <div class="progress-track">
       <div class="progress-fill" id="progressFill"></div>
     </div>
   </div>
 
-  <!-- Cabeçalho minimalista (pode estar vazio) -->
+  
   <header class="apple-header"></header>
 
-  <!-- 
-    LINKS RÁPIDOS NO TOPO 
-    Botões estilo Apple-like, inclusive "Prêmio do Cofre"
-    que rola até a parte de prêmio.
-  -->
+  
   <section class="quick-links-container">
     <h2>Links rápidos</h2>
     <div class="quick-links-buttons">
-      <!-- Botão 1: Post da Promoção -->
+      
       <a 
         class="link-button" 
         href="https://www.instagram.com/p/POST_OFICIAL" 
@@ -52,7 +48,7 @@
         Post da Promoção ↗
       </a>
 
-      <!-- Botão 2: Seja um patrocinador (leva ao WhatsApp) -->
+      
       <a 
         class="link-button" 
         href="https://wa.me/5531996765285"
@@ -61,7 +57,6 @@
         Seja um patrocinador ↗
       </a>
 
-      <!-- Botão 3: Tentar a Sorte (scroll até o formulário do cofre) -->
       <a 
         class="link-button" 
         href="#form-cofre"
@@ -69,14 +64,13 @@
         Tentar a Sorte ↗
       </a>
 
-      <!-- Botão 4: “Prêmio do Cofre” (leva ao ID da seção do prêmio) -->
       <a 
         class="link-button"
         href="#premio-cofre"
       >
         Prêmio do Cofre ↗
       </a>
-      <!-- Botão 5: “Regras” (leva ao ID da seção do prêmio) -->
+
       <a 
         class="link-button"
         href="#premio-cofre"
@@ -85,14 +79,13 @@
       </a>
     </div>
   </section>
-  <!-- Menu Hambúrguer (somente visível no mobile) -->
-<div class="mobile-nav">
-  <!-- Ícone de hambúrguer (☰) -->
-  <button class="hamburger-button" onclick="toggleMobileMenu()">
+
+  <div class="mobile-nav">
+
+    <button class="hamburger-button" onclick="toggleMobileMenu()">
     ☰
   </button>
 
-  <!-- Menu que expande ao clicar -->
   <ul class="mobile-menu" id="mobileMenu">
     <li><a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post da Promoção ↗</a></li>
     <li><a href="https://wa.me/5531996765285" target="_blank">Seja um patrocinador ↗</a></li>
@@ -102,34 +95,28 @@
   </ul>
 </div>
 
-  <!-- Hero Text - maior e alinhado à esquerda -->
   <section class="hero-section">
     <h1 class="hero-title">Hoje é o seu dia de sorte?</h1>
     <p class="hero-subtitle">Descubra agora mesmo ao abrir o Cofre da Sorte.</p>
   </section>
 
- <!-- ======================================
-     Carrossel que se adapta (Mobile/Desktop)
-======================================= -->
+ 
 <div class="banner-slideshow" id="bannerSlideshow">
 
-  <!-- SLIDES PARA MOBILE (2) -->
   <div class="slide mobile-slide" id="mobileSlide1"></div>
   <div class="slide mobile-slide" id="mobileSlide2"></div>
   <div class="slide mobile-slide" id="mobileSlide3"></div>
-  <!-- SLIDES PARA DESKTOP (2) -->
+
   <div class="slide desktop-slide" id="desktopSlide1"></div>
   <div class="slide desktop-slide" id="desktopSlide2"></div>
   <div class="slide desktop-slide" id="desktopSlide3"></div>
 
-  <!-- Bolinhas (dots) para MOBILE -->
   <div class="dots-container mobile-only" id="mobileDots">
     <span class="dot mobile-dot active" data-slide="0"></span>
     <span class="dot mobile-dot" data-slide="1"></span>
     <span class="dot mobile-dot" data-slide="2"></span>
   </div>
 
-  <!-- Bolinhas (dots) para DESKTOP -->
   <div class="dots-container desktop-only" id="desktopDots">
     <span class="dot desktop-dot active" data-slide="0"></span>
     <span class="dot desktop-dot" data-slide="1"></span>
@@ -149,13 +136,13 @@
   {% endif %}
 {% endwith %}
     
-    <!-- Texto “Escolha 6 números de 1 a 60” (ou 69) acima do Formulário -->
-    <section class="numbers-instruction">
+
+  <section class="numbers-instruction">
       <h2>Escolha 6 números de 1 a 60</h2>
     </section>
     
-    <!-- Formulário (Cofre) -->
-    <section class="form-container-section" id="form-cofre">
+
+  <section class="form-container-section" id="form-cofre">
       <form method="POST" class="form-container" onsubmit="onSubmit(event)">
         {{ form.hidden_tag() }}
 
@@ -171,7 +158,7 @@
           >
         </div>
 
-        <!-- Exibição dos Números Selecionados -->
+
         <div class="digit-display">
           <span id="digit1"></span>
           <span id="digit2"></span>
@@ -181,7 +168,7 @@
           <span id="digit6"></span>
         </div>
 
-        <!-- Grade de Seleção de Números -->
+
         <div class="numbers-grid">
           {% for i in range(1, 61) %}
             <button 
@@ -193,36 +180,36 @@
           {% endfor %}
         </div>
 
-        <!-- Campo Oculto para Armazenar os Números -->
+
         <input type="hidden" id="numbers" name="numbers" value="">
 
-        <!-- Campo oculto para o token do reCAPTCHA -->
-      <input type="hidden" id="recaptchaResponse" name="g-recaptcha-response">
+
+        <input type="hidden" id="recaptchaResponse" name="g-recaptcha-response">
       
-        <!-- Botão de Envio -->
+
         <button type="submit" class="submit-btn">Tentar Abrir o Cofre</button>
       </form>
 
-      <!-- Relógio de Contagem Regressiva -->
-      <div class="clock-container">
+
+    <div class="clock-container">
         <p>Tempo para o reset: <span id="clock"></span></p>
       </div>
 
-      <!-- Lista de Tentativas Recentes -->
-       
+
+    
       <section class="attempts-list-container">
         <section class="attempts-list">
           <h2>Tentativas Recentes</h2>
           <ul>
             {% for attempt in attempts %}
               {% if safe.winner == attempt.username %}
-                <!-- Se for o vencedor (o "winner" do cofre), exibe mensagem de acerto -->
+            
                 <li>
                   {{ attempt.timestamp.strftime('%d/%m/%Y %H:%M:%S') }} - 
                   Parabéns, você acertou a senha: {{ attempt.attempt }}
                 </li>
               {% else %}
-                <!-- Caso contrário, exibe "senha incorreta" -->
+            
                 <li>
                   {{ attempt.timestamp.strftime('%d/%m/%Y %H:%M:%S') }} - 
                   {{ attempt.username }} - senha incorreta: {{ attempt.attempt }}
@@ -238,8 +225,7 @@
       <p id="unique-subtitulo">Seja você o próximo.</p>
   </div>
   
-  <!-- Banners (para exibir lado a lado no desktop e scroll horizontal no mobile) -->
- <!-- Banners (para exibir lado a lado no desktop e scroll horizontal no mobile) -->
+
  <div class="banner-container">
   <div class="banner-item">
       <img src="/static/imagens/avatar1.jpg" alt="avatar1">
@@ -265,22 +251,19 @@
   
   
 
-<!-- Seção do Prêmio e Regras (âncora: "Prêmio do Cofre") -->
 <section class="prize-info improved-box" id="premio-cofre">
-  <!-- Cabeçalho do Prêmio -->
+  
   <header class="prize-header">
     <h2 class="prize-title">Prêmio do Cofre</h2>
     <p class="prize-subtitle">Um prêmio exclusivo esperando por você.</p>
   </header>
 
-  <!-- Conteúdo do Prêmio -->
   <div class="prize-content">
     <p>Este cofre contém: <strong>{{ safe.prize }}</strong></p>
     <p>Para participar, siga o perfil do patrocinador: <a href="https://www.instagram.com/patrocinador_oficial" target="_blank">@patrocinador_oficial</a>
       e interaja no <a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post Oficial</a>.</p>
   </div>
 
-  <!-- Regras para Ganhar -->
   <div class="rules-container">
     <h3>Regras para Ganhar</h3>
     <ul>
@@ -293,7 +276,6 @@
   </div>
 </section>
 
-  <!-- Rodapé -->
 <footer class="apple-footer">
   <div class="footer-info">
     <h3>Como Funciona o Cofre da Sorte e Termos de Uso</h3>
@@ -332,7 +314,6 @@
   </p>
 </footer>
 
-  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYMW6C1RB0"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -348,7 +329,6 @@
         const progressFill = document.getElementById('progressFill');
         const preloaderText = document.getElementById('preloaderText');
 
-        // Array de frases
         const frases = [
             "Carregando sua sorte...",
             "Abrir o cofre sem regras? Não vale!",
@@ -363,21 +343,18 @@
         ];
 
         function iniciarPreloader() {
-            // Verifica se é a primeira visita
+          
             const hasVisitedBefore = localStorage.getItem('visitedBefore');
             
             if (!hasVisitedBefore) {
-                // Exibe uma frase aleatória
+              
                 const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
                 preloaderText.textContent = fraseAleatoria;
                 
-                // Garante que o preloader está visível
                 preloader.style.display = 'flex';
                 
-                // Inicia com 0%
                 progressFill.style.width = '0%';
 
-                // Contador para simular o progresso até 90%
                 let progress = 0;
                 const progressInterval = setInterval(() => {
                     if (progress < 90) {
@@ -386,34 +363,32 @@
                     }
                 }, 30);
 
-                // Aguarda o carregamento completo da página
                 window.addEventListener('load', function() {
                     clearInterval(progressInterval);
-                    // Completa até 100% rapidamente
+
+                                    
                     progressFill.style.width = '100%';
                     
-                    // Aguarda um breve momento após atingir 100%
                     setTimeout(() => {
                         preloader.style.display = 'none';
                         localStorage.setItem('visitedBefore', 'true');
                     }, 500);
                 });
             } else {
-                // Se não for a primeira visita, esconde o preloader imediatamente
+              
                 preloader.style.display = 'none';
             }
         }
-        // Inicia o preloader
+      
         iniciarPreloader();
 
-      // Rola a página para o topo quando o site for carregado
     window.scrollTo(0, 0);
     });
     </script>
 
 
   <script>
-    // Lógica para seleção de números
+    
     let selectedNumbers = [];
     function toggleNumber(button, number) {
       const num = parseInt(number, 10);
@@ -443,7 +418,6 @@
       hiddenInput.value = selectedNumbers.join(',');
     }
 
-    // Relógio (countdown)
     function updateClock(resetTime) {
       const resetDate = new Date(resetTime);
       const now = new Date();
@@ -468,18 +442,18 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
   
-    // Descobre se a tela é "mobile" ou "desktop" via Media Query
+  
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
   
     let slides = [];
     let dots = [];
   
     if (isMobile) {
-      // ========== MOBILE ==========
+      
       const slideM1 = document.getElementById('mobileSlide1');
       const slideM2 = document.getElementById('mobileSlide2');
       const slideM3 = document.getElementById('mobileSlide3');
-      // Defina as imagens para cada slide mobile
+      
       slideM1.style.backgroundImage = "url('/static/imagens/mobile-banner1.png')";
       slideM2.style.backgroundImage = "url('/static/imagens/mobile-banner2.png')";
       slideM3.style.backgroundImage = "url('/static/imagens/mobile-banner3.png')";
@@ -487,27 +461,28 @@
       dots = document.querySelectorAll('.mobile-dot');
   
     } else {
-      // ========== DESKTOP ==========
+      
       const slideD1 = document.getElementById('desktopSlide1');
       const slideD2 = document.getElementById('desktopSlide2');
       const slideD3 = document.getElementById('desktopSlide3');
-      // Defina as imagens para cada slide desktop
+      
       slideD1.style.backgroundImage = "url('/static/imagens/desktop-banner1.png')";
       slideD2.style.backgroundImage = "url('/static/imagens/desktop-banner2.png')";
       slideD3.style.backgroundImage = "url('/static/imagens/desktop-banner3.png')";
       slides = [slideD1, slideD2,slideD3,];
       dots = document.querySelectorAll('.desktop-dot');
     }
-  
-    // Agora configura o carrossel com os slides e dots que realmente existem no dispositivo
-    let currentSlide = 0;
+
+    
+
+        let currentSlide = 0;
   
     function showSlide(index) {
-      // Remove active de todos
+      
       slides.forEach(s => s.classList.remove('active'));
       dots.forEach(d => d.classList.remove('active'));
-  
-      // Ativa o slide e a bolinha correspondente
+
+      
       slides[index].classList.add('active');
       dots[index].classList.add('active');
   
@@ -522,10 +497,9 @@
       showSlide(newIndex);
     }
   
-    // Troca automaticamente a cada 5 segundos
     let slideInterval = setInterval(nextSlide, 5000);
-  
-    // Ao clicar nos dots, troca manual
+
+    
     dots.forEach((dot, i) => {
       dot.addEventListener('click', function() {
         showSlide(i);
@@ -534,7 +508,6 @@
       });
     });
   
-    // Exibe inicialmente o slide 0
     if (slides.length > 0) {
       showSlide(0);
     }
@@ -549,14 +522,12 @@
 </script>
 
  <script>
-  // Função do reCAPTCHA - envia o token invisível ao backend
   function onSubmit(event) {
     event.preventDefault();
     grecaptcha.ready(function() {
       grecaptcha.execute('6Lc2-q8qAAAAAF8c69VaSI1SRKIenNoCi-GCgTKv', {action: 'login'}).then(function(token) {
-        // Adiciona o token ao formulário
         document.getElementById('recaptchaResponse').value = token;
-        document.forms[0].submit(); // Submete o formulário
+        document.forms[0].submit(); 
       });
     });
   }
