@@ -76,8 +76,31 @@
       >
         Prêmio do Cofre ↗
       </a>
+      <!-- Botão 5: “Regras” (leva ao ID da seção do prêmio) -->
+      <a 
+        class="link-button"
+        href="#premio-cofre"
+      >
+        Regras Cofre ↗
+      </a>
     </div>
   </section>
+  <!-- Menu Hambúrguer (somente visível no mobile) -->
+<div class="mobile-nav">
+  <!-- Ícone de hambúrguer (☰) -->
+  <button class="hamburger-button" onclick="toggleMobileMenu()">
+    ☰
+  </button>
+
+  <!-- Menu que expande ao clicar -->
+  <ul class="mobile-menu" id="mobileMenu">
+    <li><a href="https://www.instagram.com/p/POST_OFICIAL" target="_blank">Post da Promoção ↗</a></li>
+    <li><a href="https://wa.me/5531996765285" target="_blank">Seja um patrocinador ↗</a></li>
+    <li><a href="#form-cofre">Tentar a Sorte ↗</a></li>
+    <li><a href="#premio-cofre">Prêmio do Cofre ↗</a></li>
+    <li><a href="#premio-cofre">Regras Cofre ↗</a></li>
+  </ul>
+</div>
 
   <!-- Hero Text - maior e alinhado à esquerda -->
   <section class="hero-section">
@@ -85,13 +108,30 @@
     <p class="hero-subtitle">Descubra agora mesmo ao abrir o Cofre da Sorte.</p>
   </section>
 
-   <!-- SLIDESHOW de banners (agora com 2 banners diferentes) -->
-<div class="banner-slideshow">
-  <!-- Banner para celular -->
-  <div class="slide mobile-banner" id="mobile-banner"></div>
+ <!-- ======================================
+     Carrossel que se adapta (Mobile/Desktop)
+======================================= -->
+<div class="banner-slideshow" id="bannerSlideshow">
 
-  <!-- Banner para desktop -->
-  <div class="slide desktop-banner" id="desktop-banner"></div>
+  <!-- SLIDES PARA MOBILE (2) -->
+  <div class="slide mobile-slide" id="mobileSlide1"></div>
+  <div class="slide mobile-slide" id="mobileSlide2"></div>
+
+  <!-- SLIDES PARA DESKTOP (2) -->
+  <div class="slide desktop-slide" id="desktopSlide1"></div>
+  <div class="slide desktop-slide" id="desktopSlide2"></div>
+
+  <!-- Bolinhas (dots) para MOBILE -->
+  <div class="dots-container mobile-only" id="mobileDots">
+    <span class="dot mobile-dot active" data-slide="0"></span>
+    <span class="dot mobile-dot" data-slide="1"></span>
+  </div>
+
+  <!-- Bolinhas (dots) para DESKTOP -->
+  <div class="dots-container desktop-only" id="desktopDots">
+    <span class="dot desktop-dot active" data-slide="0"></span>
+    <span class="dot desktop-dot" data-slide="1"></span>
+  </div>
 </div>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -401,26 +441,85 @@
   </script>
 
 <script>
-  // Lista de banners para celular
- const mobileBanners = [
-   "mobile-banner1.png",
+  document.addEventListener('DOMContentLoaded', function() {
   
- ];
- 
- // Lista de banners para desktop
- const desktopBanners = [
-   "desktop-banner1.png",
- 
- ];
- 
- // Escolher um banner aleatório para celular
- const mobileChosenBanner = mobileBanners[Math.floor(Math.random() * mobileBanners.length)];
- document.getElementById("mobile-banner").style.backgroundImage = `url('/static/imagens/${mobileChosenBanner}')`;
- 
- // Escolher um banner aleatório para desktop
- const desktopChosenBanner = desktopBanners[Math.floor(Math.random() * desktopBanners.length)];
- document.getElementById("desktop-banner").style.backgroundImage = `url('/static/imagens/${desktopChosenBanner}')`;
- </script>
+    // Descobre se a tela é "mobile" ou "desktop" via Media Query
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  
+    let slides = [];
+    let dots = [];
+  
+    if (isMobile) {
+      // ========== MOBILE ==========
+      const slideM1 = document.getElementById('mobileSlide1');
+      const slideM2 = document.getElementById('mobileSlide2');
+      // Defina as imagens para cada slide mobile
+      slideM1.style.backgroundImage = "url('/static/imagens/mobile-banner1.png')";
+      slideM2.style.backgroundImage = "url('/static/imagens/mobile-banner2.png')";
+  
+      slides = [slideM1, slideM2];
+      dots = document.querySelectorAll('.mobile-dot');
+  
+    } else {
+      // ========== DESKTOP ==========
+      const slideD1 = document.getElementById('desktopSlide1');
+      const slideD2 = document.getElementById('desktopSlide2');
+      // Defina as imagens para cada slide desktop
+      slideD1.style.backgroundImage = "url('/static/imagens/desktop-banner1.png')";
+      slideD2.style.backgroundImage = "url('/static/imagens/desktop-banner2.png')";
+  
+      slides = [slideD1, slideD2];
+      dots = document.querySelectorAll('.desktop-dot');
+    }
+  
+    // Agora configura o carrossel com os slides e dots que realmente existem no dispositivo
+    let currentSlide = 0;
+  
+    function showSlide(index) {
+      // Remove active de todos
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+  
+      // Ativa o slide e a bolinha correspondente
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+  
+      currentSlide = index;
+    }
+  
+    function nextSlide() {
+      let newIndex = currentSlide + 1;
+      if (newIndex >= slides.length) {
+        newIndex = 0;
+      }
+      showSlide(newIndex);
+    }
+  
+    // Troca automaticamente a cada 5 segundos
+    let slideInterval = setInterval(nextSlide, 5000);
+  
+    // Ao clicar nos dots, troca manual
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', function() {
+        showSlide(i);
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, 5000);
+      });
+    });
+  
+    // Exibe inicialmente o slide 0
+    if (slides.length > 0) {
+      showSlide(0);
+    }
+  });
+  </script>
+
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+  }
+</script>
 
  <script>
   // Função do reCAPTCHA - envia o token invisível ao backend
