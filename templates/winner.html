@@ -6,26 +6,24 @@
     <title>Você Ganhou!</title>
     
     <style>
-        /* Reset básico */
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
 
-        /* Corpo */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
                          Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-            background-color: #f5f5f7; /* leve cinza, estilo Apple */
+            background-color: #f5f5f7; 
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;  /* ocupar toda a tela */
+            min-height: 100vh;  
             color: #333;
         }
 
-        /* Container principal */
+       
         .winner-container {
             background-color: #fff;
             padding: 2rem;
@@ -34,14 +32,14 @@
             text-align: center;
             width: 90%;
             max-width: 480px;
-            transition: opacity 0.6s ease; /* transição suave opcional */
+            transition: opacity 0.6s ease; 
         }
 
         .winner-container h1 {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            color: #000;  /* texto mais escuro */
+            color: #000;  
         }
 
         .winner-container p {
@@ -57,7 +55,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Botão estilo Apple-minimalista */
+        
         .winner-container a {
             display: inline-block;
             padding: 0.8rem 1.5rem;
@@ -67,13 +65,13 @@
             border-radius: 9999px; 
             font-size: 1rem;
             transition: background-color 0.3s ease;
-            margin-top: 1rem; /* espaçamento do botão */
+            margin-top: 1rem; 
         }
         .winner-container a:hover {
             background-color: #444;
         }
 
-        /* Mensagens Flash (similar ao que usamos no index) */
+        
         .flashes {
             margin-bottom: 1rem;
         }
@@ -85,21 +83,21 @@
             text-align: center;
         }
         .message-banner.success {
-            background-color: #4caf50; /* verde Apple-ish */
+            background-color: #4caf50; 
         }
         .message-banner.error {
-            background-color: #f44336; /* vermelho */
+            background-color: #f44336; 
         }
         .message-banner.info {
-            background-color: #2196f3; /* azul */
+            background-color: #2196f3; 
         }
 
-        /* Estado oculto */
+        
         .hidden {
             display: none;
         }
 
-        /* Responsividade */
+        
         @media (max-width: 480px) {
             .winner-container {
                 padding: 1.5rem;
@@ -121,10 +119,10 @@
     </style>
 </head>
 <body>
-    <!-- Container principal: exibe a etapa 1 (parabéns) e depois a etapa 2 (quem venceu) -->
+    
     <div class="winner-container">
 
-        <!-- Exibição de mensagens flash, se houver -->
+
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <div class="flashes">
@@ -137,7 +135,7 @@
           {% endif %}
         {% endwith %}
 
-        <!-- BLOCO DE ETAPA 1 (APARECE PRIMEIRO) -->
+        
         <div id="winner-step-1">
           <h1>Parabéns, {{ username }}!</h1>
           <p>Você acertou a combinação do cofre.</p>
@@ -151,7 +149,7 @@
           <p><em>(Esta tela mudará automaticamente em até 1 minuto.)</em></p>
         </div>
 
-        <!-- BLOCO DE ETAPA 2 (APARECE APÓS 1 MINUTO) -->
+        
         <div id="winner-step-2" class="hidden">
           <h1>{{ username }} foi o vencedor!</h1>
           <p>
@@ -166,17 +164,17 @@
     </div>
 
     <script>
-      // Após 60 segundos, ocultamos o "winner-step-1" e exibimos "winner-step-2"
+      
       window.addEventListener('load', function(){
         setTimeout(() => {
           const step1 = document.getElementById('winner-step-1');
           const step2 = document.getElementById('winner-step-2');
 
-          // Oculta o step1
+          
           step1.classList.add('hidden');
-          // Mostra o step2
+          
           step2.classList.remove('hidden');
-        }, 60000); // 60000 ms = 1 minuto
+        }, 60000); 
       });
     </script>
 </body>
