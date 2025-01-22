@@ -13,7 +13,7 @@ with app.app_context():
             db.session.commit()  # Confirma a exclusão das tentativas
 
             # Resetando o cofre com uma nova combinação, prêmio e doador
-            safe.reset(new_combination="11-22-33-53-54-18", new_prize=" R$500 REAIS!", new_donor="@mullerfp")
+            safe.reset(new_combination="08-19-27-34-45-59", new_prize=" R$500 REAIS!", new_donor="@mullerfp")
             db.session.commit()  # Salva as alterações no banco de dados
 
             # Exibe a nova combinação resetada
