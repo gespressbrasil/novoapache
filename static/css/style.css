@@ -86,78 +86,156 @@ body {
 /* ==============================
    Regras Cofre (#premio-cofre)
 ============================== */
-#premio-cofre {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  padding: 10px;
+/* Container geral do painel de prêmio */
+.prize-info {
+  background-color: #fff;
+  border: 1px solid #f0f0f0; /* Borda sutil */
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Sombra discreta para destaque */
+  font-family: 'Roboto', sans-serif;
 }
-.prize-header, .prize-content, .rules-container {
-  width: 100%;
+
+/* Cabeçalho do painel de prêmio */
+.prize-header {
   text-align: center;
+  margin-bottom: 1.5rem;
 }
-.rules-container ul {
-  list-style: none; 
-  padding: 0; 
+
+.prize-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.prize-subtitle {
+  font-size: 1.2rem;
+  color: #666;
   margin: 0;
 }
-.rules-container li {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  position: relative;
+
+/* Conteúdo do prêmio */
+.prize-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #444;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.prize-content a {
+  color: #0071e3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prize-content a:hover {
+  text-decoration: underline;
+}
+
+/* Regras para ganhar */
+.rules-container {
+  background-color: #f9f9f9;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.rules-container h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.rules-container ul {
+  list-style: none;
   padding-left: 0;
+  margin: 0;
 }
+
+.rules-container li {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+}
+
+.rules-container li:last-child {
+  border-bottom: none;
+}
+
+/* Ícone visual opcional para as regras */
 .rules-container li::before {
-  content: ''; 
+  margin-right: 0.5rem;
+  color: #0071e3;
+  font-weight: bold;
 }
+
+
 
 /* CONTAINER CENTRALIZADOR DA LISTA DE TENTATIVAS */
 .attempts-list-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 
 /* BLOCO DA LISTA DE TENTATIVAS EM SI */
 .attempts-list {
-  background-color: #fff; 
-  border: 1px solid #eee;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  width: 80%;
+  background-color: #fff;
+  border: 1px solid #f0f0f0; /* Borda bem sutil */
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Sombra leve para definir o bloco */
+  width: 90%;
   max-width: 800px;
   margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
 }
+
+/* TÍTULO DA LISTA */
 .attempts-list h2 {
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: #333;
   margin-bottom: 1rem;
   text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
 }
+
+/* LISTA SEM BOLINHAS */
 .attempts-list ul {
   list-style: none;
-  padding-left: 0;
   margin: 0;
+  padding: 0;
 }
+
+/* ITENS DA LISTA */
 .attempts-list li {
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.5;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
-  color: #666;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
 }
+
+/* REMOVE A BORDA DO ÚLTIMO ITEM */
 .attempts-list li:last-child {
   border-bottom: none;
 }
-
-
 /* ==============================
    QUICK LINKS (TOPO)
 ============================== */
