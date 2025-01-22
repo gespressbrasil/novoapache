@@ -157,7 +157,7 @@ limiter = Limiter(
     get_remote_address,
     app=app,
     storage_uri=storage_uri,  
-    default_limits=["1000 per day", "1000 per hour"]
+    default_limits=["250 per day", "80 per hour"]
 )
 
 
@@ -292,7 +292,7 @@ class AttemptForm(FlaskForm):
 
 
 @app.route("/", methods=["GET", "POST"])
-@limiter.limit("1000/minute")
+@limiter.limit("20/minute")
 def index():
     """
     Página principal com o formulário para tentar abrir o cofre.
