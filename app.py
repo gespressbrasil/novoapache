@@ -103,7 +103,7 @@ CSP_POLICY = {
         "https://www.google.com",
         "https://www.gstatic.com",
         "https://www.recaptcha.net",
-        "https://www.googletagmanager.com",  # Adicionado para Google Tag Manager
+        "https://www.googletagmanager.com",  # Para Google Tag Manager
         "'unsafe-inline'"
     ],
     
@@ -123,22 +123,23 @@ CSP_POLICY = {
         "data:",
         "https://www.google.com",
         "https://www.gstatic.com",
-        "https://www.youtube.com",           # Adicionado para imagens do YouTube
-        "https://i.ytimg.com"               # Adicionado para thumbnails do YouTube
+        "https://www.youtube.com",           # Para imagens do YouTube
+        "https://i.ytimg.com"               # Para thumbnails do YouTube
     ],
     
     "connect-src": [
         "'self'",
         "https://www.google.com",
-        "https://www.gstatic.com"
+        "https://www.gstatic.com",
+        "https://www.google-analytics.com"   # Adicionado para Google Analytics
     ],
     
     "frame-src": [
         "'self'",
         "https://www.google.com",
         "https://www.recaptcha.net",
-        "https://www.youtube.com",           # Adicionado para embeds do YouTube
-        "https://www.youtube-nocookie.com"   # Adicionado para embeds com cookies restritos do YouTube
+        "https://www.youtube.com",           # Para embeds do YouTube
+        "https://www.youtube-nocookie.com"   # Para embeds com cookies restritos do YouTube
     ],
     
     "object-src": ["'none'"],
