@@ -249,7 +249,27 @@
   </div>
 </div>
   
-  
+  {% if show_video %}
+<div class="video-overlay" id="videoModal">
+  <div class="video-content">
+    <!-- Botão de fechar com contador -->
+    <button class="close-btn" id="closeVideoBtn" disabled>
+      Fechar em <span id="countdown">5</span>
+    </button>
+
+    <!-- Iframe do YouTube, com URL 'embed' e autoplay=1 -->
+    <div class="video-wrapper">
+      <iframe
+        id="videoIframe"
+        src="https://www.youtube.com/embed/eJMVZZCUpsI?autoplay=1&enablejsapi=1"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</div>
+{% endif %}
 
 <section class="prize-info improved-box" id="premio-cofre">
   
@@ -321,6 +341,65 @@
   gtag('js', new Date());
 
   gtag('config', 'G-PYMW6C1RB0');
+</script>
+<script>
+  // Função para carregar a API do YouTube e inicializar o player
+function onYouTubeIframeAPIReady() {
+  // Inicializa o player do YouTube
+  const player = new YT.Player('videoIframe', {
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+
+  // Inicializa o contador
+  let countdownValue = 5;
+  const countdownElement = document.getElementById('countdown');
+  const closeBtn = document.getElementById('closeVideoBtn');
+
+  // Função para atualizar o contador
+  function updateCountdown() {
+    if (countdownValue > 0) {
+      countdownElement.textContent = countdownValue;  // Atualiza o contador no botão
+      countdownValue--;  // Decrementa o contador
+    } else {
+      countdownElement.textContent = 'X';  // Exibe o "X" para fechar
+      closeBtn.disabled = false;  // Habilita o botão de fechar
+    }
+  }
+
+  // Atualiza o contador a cada 1 segundo
+  const countdownInterval = setInterval(updateCountdown, 1000);
+
+  // Fechar o modal ao clicar no botão
+  closeBtn.addEventListener('click', function() {
+    // Para o vídeo
+    player.stopVideo();  // Método que para o vídeo
+    document.getElementById('videoModal').style.display = 'none';  // Fecha o modal
+    clearInterval(countdownInterval);  // Para o contador
+  });
+}
+
+// Função chamada quando o player está pronto
+function onPlayerReady(event) {
+  event.target.playVideo();  // Garante que o vídeo começa automaticamente
+}
+
+// Função chamada quando o estado do player muda
+function onPlayerStateChange(event) {
+  // Verifica quando o vídeo terminar
+  if (event.data === YT.PlayerState.ENDED) {
+    // Fecha automaticamente o modal quando o vídeo terminar
+    document.getElementById('videoModal').style.display = 'none';
+  }
+}
+
+// Carregar a API do YouTube de forma assíncrona
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 </script>
 
   <script>
