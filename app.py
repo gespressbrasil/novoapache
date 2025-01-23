@@ -97,45 +97,54 @@ print(f"Threshold de reCAPTCHA: {RECAPTCHA_THRESHOLD}")
 
 CSP_POLICY = {
     "default-src": ["'self'"],
+    
     "script-src": [
         "'self'",
         "https://www.google.com",
         "https://www.gstatic.com",
-        "https://www.google-analytics.com",  # Permite Google Analytics
-        "https://www.googletagmanager.com",  # Permite Google Tag Manager
-        "https://www.youtube.com",           # Permite YouTube
-        "'unsafe-inline'"                   # Permite inline scripts (necessário em alguns casos)
+        "https://www.recaptcha.net",
+        "https://www.googletagmanager.com",  # Adicionado para Google Tag Manager
+        "'unsafe-inline'"
     ],
+    
     "style-src": [
         "'self'",
-        "'unsafe-inline'",  # Necessário para permitir estilos inline
+        "'unsafe-inline'",
         "https://fonts.googleapis.com"
     ],
+    
     "font-src": [
         "'self'",
         "https://fonts.gstatic.com"
     ],
+    
     "img-src": [
         "'self'",
         "data:",
         "https://www.google.com",
         "https://www.gstatic.com",
-        "https://i.ytimg.com"  # Permite imagens do YouTube
+        "https://www.youtube.com",           # Adicionado para imagens do YouTube
+        "https://i.ytimg.com"               # Adicionado para thumbnails do YouTube
     ],
+    
     "connect-src": [
         "'self'",
         "https://www.google.com",
-        "https://www.gstatic.com",
-        "https://www.google-analytics.com"  # Permite Google Analytics
+        "https://www.gstatic.com"
     ],
+    
     "frame-src": [
         "'self'",
         "https://www.google.com",
         "https://www.recaptcha.net",
-        "https://www.youtube.com"  # Permite embeds do YouTube
+        "https://www.youtube.com",           # Adicionado para embeds do YouTube
+        "https://www.youtube-nocookie.com"   # Adicionado para embeds com cookies restritos do YouTube
     ],
+    
     "object-src": ["'none'"],
+    
     "base-uri": ["'self'"],
+    
     "form-action": ["'self'"]
 }
 
@@ -302,7 +311,7 @@ def index():
     """
     Página principal com o formulário para tentar abrir o cofre.
     """
-    from zoneinfo import ZoneInfo  # Certifique-se de ter esta importação (Python 3.9+)
+    from zoneinfo import ZoneInfo  
 
     safe = Safe.query.first()
 
@@ -310,15 +319,15 @@ def index():
         flash("O cofre ainda não foi configurado.", "error")
         return render_template("index.html", safe=None, attempts=[], form=None)
 
-    # Impede que tentativas sejam feitas enquanto o cofre estiver "resetando"
+    
     if safe.winner:
         flash("O cofre já foi aberto! Parabéns ao vencedor!", "success")
         return redirect(url_for("winner"))
 
-    # 1) Busca as tentativas salvas em UTC (sem tzinfo)
+    
     attempts_utc = Attempt.query.order_by(Attempt.timestamp.desc()).limit(10).all()
     
-    # 2) Converte cada tentativa explicitamente para fuso de São Paulo
+    
     tz_sp = ZoneInfo("America/Sao_Paulo")
     attempts = []
     for a in attempts_utc:
@@ -333,15 +342,15 @@ def index():
 
     if form.validate_on_submit():
         username = form.username.data.strip()
-        combination = form.numbers.data.strip()  # Pega a combinação de números enviada pelo formulário
+        combination = form.numbers.data.strip()  
         recaptcha_token = request.form.get("g-recaptcha-response", "")
 
-        # Verifica reCAPTCHA v3
+       
         if not verify_recaptcha(recaptcha_token, "login"):
             flash("Verificação reCAPTCHA falhou. Tente novamente.", "error")
             return redirect(url_for("index"))
 
-        # Valida username e combination
+        
         if not validate_username(username):
             flash("Nome de usuário inválido! Exemplo válido: @usuario123", "error")
             return redirect(url_for("index"))
@@ -350,28 +359,22 @@ def index():
             flash("Combinação inválida! Ex.: '1,2,30,45,59,60'", "error")
             return redirect(url_for("index"))
 
-        # Verifica tentativas do mesmo usuário nas últimas 2 horas
+        
         time_2_hours_ago = datetime.now(timezone.utc) - timedelta(hours=2)
         attempts_count = Attempt.query.filter(
             Attempt.username == username,
             Attempt.timestamp >= time_2_hours_ago
         ).count()
-
-        # Agora o limite é de 3 tentativas a cada 2 horas
-        if attempts_count >= 3:
-            flash("Você atingiu o limite de 3 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
+        if attempts_count >= 2:
+            flash("Você atingiu o limite de 2 tentativas a cada 2 horas. Tente novamente mais tarde.", "error")
             return redirect(url_for("index"))
 
-        # Registrar a nova tentativa
+        
         new_attempt = Attempt(username=escape(username), attempt=escape(combination))
         db.session.add(new_attempt)
         db.session.commit()
 
-        # Descobre se agora o usuário chegou à 2ª tentativa
-        # (ou seja, se antes ele tinha attempts_count = 1, agora passa a 2)
-        show_video = (attempts_count + 1 == 2)
-
-        # Comparação de combinações (desconsiderando a ordem)
+       
         user_combination = sorted([int(num) for num in combination.split(',')])
         safe_combination = sorted([int(num) for num in safe.combination.split('-')])
 
@@ -383,17 +386,13 @@ def index():
         else:
             flash("Combinação incorreta. Tente novamente.", "error")
 
-        # Redireciona para a página principal, indicando se deve exibir o vídeo ou não
-        return redirect(url_for("index", show_video="1" if show_video else "0"))
+        
+        return redirect(url_for("index"))
     
-    # Verifica se a query string "show_video=1" está presente
-    show_video_param = request.args.get("show_video", "0")
-    show_video_bool = (show_video_param == "1")
-
-    # Passa as tentativas (já convertidas), total_attempts e show_video
+    
     total_attempts = Attempt.query.count()
 
-    # Cálculo opcional de tempo restante para reset
+    
     days = hours = minutes = 0
     if safe and safe.reset_time:
         delta = safe.reset_time.replace(tzinfo=timezone.utc) - datetime.now(timezone.utc)
@@ -406,14 +405,14 @@ def index():
         "index.html",
         form=form,
         safe=safe,
-        attempts=attempts,
+        attempts=attempts,  
         total_attempts=total_attempts,
         days=days,
         hours=hours,
         minutes=minutes,
         recaptcha_site_key=app.config.get("RECAPTCHA_PUBLIC_KEY"),
-        show_video=show_video_bool
     )
+
 
 @app.route("/winner", methods=["GET"])
 def winner():
